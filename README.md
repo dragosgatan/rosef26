@@ -14,5 +14,5 @@ abliterated: anti abliteration cheap(no fine-tuning), or making it hard for atta
 
 models: [obliteratus qwen3.8 27b](https://huggingface.co/OBLITERATUS/Qwen3.8-27B-OBLITERATED), [huihui qwen3.8 27b](https://huggingface.co/huihui-ai/Huihui-Qwen3.8-27B-abliterated-GGUF), [other random 3.8 27b](https://huggingface.co/windowsxp811203/Qwen3.8-27B-Abliterated)
 
-efficient prevention: (DDO, injects a strong decoy signal into the mlp neurons)[https://arxiv.org/abs/2609.16204v1], 
+efficient prevention: [DDO, injects a strong decoy signal into the mlp neurons](https://arxiv.org/abs/2609.16204v1)
 
