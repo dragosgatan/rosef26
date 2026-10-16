@@ -1,18 +1,7 @@
-# rosef26
+# RoSEF 2026 - Camouflaging DDO
 
-new safeguard for preventing jailbreaking llm's !!!note: possibly general and not only ciphers!!! by using ciphers (leetspeak, rot etc.)
+Relevant: [DDO](https://arxiv.org/html/2609.16204v1), [DDO Github](https://github.com/aashiqmuhamed/defending-against-abliteration), [Original Abliteration Paper](https://arxiv.org/html/2406.11717v3), [Comparison of methods](https://arxiv.org/html/2512.13655v2)
 
-my idea is to monitor reasoning instead of scanning prompts or output
+What we aim to achieve: Breaking DDO by detection, propose/test a Camouflage of DDO, among other things related to it, like how well it works on smaller models (1.5b-3b)
 
-relevant sources: [jailbreaking using ciphers](https://arxiv.org/html/2402.10601v5), [github code for the previous paper](https://github.com/DivijH/jailbreak_cryptography) [jailbroken model capabilities](https://arxiv.org/pdf/2605.00267), [constitutional classifiers++ by anthropic](https://arxiv.org/abs/2601.04603), [models can't reason in ciphers](https://arxiv.org/abs/2510.09714)
-
-!!! pessimist alert: i'm so hopeless on this idea, it is a huge trouble jailbreaking modern models, and the fix i propose already exists!!!
-
-other ideas sources down below
-
-abliterated: anti abliteration cheap(no fine-tuning), or making it hard for attackers, but once again, mostly already exists
-
-models: [obliteratus qwen3.8 27b](https://huggingface.co/OBLITERATUS/Qwen3.8-27B-OBLITERATED), [huihui qwen3.8 27b](https://huggingface.co/huihui-ai/Huihui-Qwen3.8-27B-abliterated-GGUF), [other random 3.8 27b](https://huggingface.co/windowsxp811203/Qwen3.8-27B-Abliterated)
-
-efficient prevention: [DDO, injects a strong decoy signal into the mlp neurons](https://arxiv.org/abs/2609.16204v1)
-
+To do: achieve their exact model (generation script should be in the repo), write a torch script to find the outlier neurons, test camouflaging.
