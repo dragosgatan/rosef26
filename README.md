@@ -4,4 +4,43 @@ Relevant: [DDO](https://arxiv.org/html/2609.16204v1), [DDO Github](https://githu
 
 What we aim to achieve: Breaking DDO by detection, propose/test a Camouflage of DDO, among other things related to it, like how well it works on smaller models (1.5b-3b)
 
-To do: achieve their exact model (generation script should be in the repo), write a torch script to find the outlier neurons, test camouflaging.
+## Building the DDO-defended Llama-3-8B
+
+Authors' code, their published Llama-3 config, bf16. Needs a 24 GB GPU (RTX 3090), ~1-1.5 h for two seeds.
+
+First: accept the licence at https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct (approval is manual, status at https://huggingface.co/settings/gated-repos) and create a Read token at https://huggingface.co/settings/tokens.
+
+```bash
+git clone --recurse-submodules <your repo URL> && cd rosef26
+scripts/setup_env.sh
+export HF_TOKEN=hf_...                   # never put it in a file
+scripts/build_ddo_llama3.sh --seed 42
+scripts/build_ddo_llama3.sh --seed 43    # optional
+git add artifacts && git commit -m "DDO build artifacts" && git push   # before shutting the box down
+```
+
+The authors' code is installed with a memory patch so it fits in 24 GB; see [`patches/README.md`](patches/README.md).
+
+**Outputs:**
+
+| Path | What | In git |
+|---|---|---|
+| `models/hf_cache/` | the original model download | no |
+| `models/ddo_llama3_seed<N>/` | the defended model (~16 GB) | no |
+| `artifacts/ddo_llama3_seed<N>/` | `build.log`, `ddo_defense.json`, `config.json`, `manifest.json` (versions, GPU, sha256 of every shard), `edits.safetensors` (the edited neurons, ~200 KB) | yes |
+
+**Rebuild the exact defended model later** (any machine, CPU is enough):
+
+```bash
+.venv/bin/python scripts/reapply_edits.py \
+    --edits artifacts/ddo_llama3_seed42/edits.safetensors \
+    --out models/ddo_llama3_seed42
+```
+
+## Credits
+
+The DDO method and code are by Aashiq Muhamed, Mona T. Diab and Virginia Smith:
+
+> Muhamed, A., Diab, M. T., & Smith, V. (2026). *Decoy Direction Optimization: A Post-Hoc Defense Against LLM Abliteration.* arXiv:2609.16204.
+
+Their code ([github.com/aashiqmuhamed/defending-against-abliteration](https://github.com/aashiqmuhamed/defending-against-abliteration)) is released under the Apache-2.0 licence and is included unmodified as a git submodule in `third_party/ddo`, pinned to commit `a26f23e`. Our only change to it is the memory patch in `patches/`.

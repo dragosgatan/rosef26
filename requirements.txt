@@ -1,0 +1,26 @@
+# Installed by scripts/setup_env.sh, which also installs nnsight==0.3.7 with
+# --no-deps (it declares torch>=2.4, which would replace the authors' torch 2.3.0)
+# and then the patched DDO library from third_party/ddo.
+--extra-index-url https://download.pytorch.org/whl/cu121
+torch==2.3.0+cu121
+# torch 2.3.0 wheels are built against NumPy 1.x
+numpy==1.26.4
+
+# The authors' pins (third_party/ddo/pyproject.toml)
+transformers==4.51.0
+tokenizers==0.21.4
+accelerate==0.33.0
+optuna==4.9.0
+tqdm==4.70.1
+
+# nnsight 0.3.7's own dependencies, minus torch, torchvision and diffusers (unused here)
+protobuf==7.36.2
+python-socketio[client]==5.17.0
+pydantic==2.14.1
+sentencepiece==0.2.2
+einops==0.8.2
+
+# Our scripts and tests
+huggingface_hub==0.36.2
+safetensors==0.8.0
+pytest==9.1.1

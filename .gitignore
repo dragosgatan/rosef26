@@ -1,0 +1,4 @@
+# Model weights (original download cache and defended checkpoints, ~16 GB each)
+models/
+.venv/
+__pycache__/

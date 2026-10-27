@@ -1,0 +1,136 @@
+diff --git a/ddo_defense/defense/optimizer.py b/ddo_defense/defense/optimizer.py
+index 86bb0c3..cba6e48 100644
+--- a/ddo_defense/defense/optimizer.py
++++ b/ddo_defense/defense/optimizer.py
+@@ -1078,6 +1078,30 @@ class DDOOptimizer:
+                         layer.mlp.output[:] - projection_einops(layer.mlp.output[:], d)
+                     )
+ 
++        def _confusion_term(prompts: List[str]) -> float:
++            """KL(defended || self-attacked) over ``prompts``, backpropagated.
++
++            One prompt per pass instead of the whole batch in one pass, to bound
++            activation memory on a 24 GB GPU.  Each prompt's KL is divided by
++            ``len(prompts)``, so the summed loss and gradient equal the batchmean
++            the single-pass version computed; only floating-point rounding differs.
++            """
++            total = 0.0
++            for prompt in prompts:
++                with model.trace() as tracer:
++                    with tracer.invoke([prompt]):
++                        injector.inject_all()
++                        defended = model.lm_head.output[:, -1]
++                    with tracer.invoke([prompt]):
++                        injector.inject_all()
++                        _apply_rfa_ablation(cached_dirs)
++                        attacked = model.lm_head.output[:, -1]
++                    conf_loss = kl_div_fn(defended, attacked) / len(prompts)
++                    log_conf = conf_loss.detach().item().save()
++                    (confusion_lambda * accumulation_steps * conf_loss).backward()
++                total += log_conf.value
++            return total
++
+         step = 0
+         opt_step = 0
+         stopped = False
+@@ -1152,24 +1176,28 @@ class DDOOptimizer:
+                     if refusal_score_lambda > 0 and conf_harmful_pool:
+                         harm_rs = _take_window(conf_harmful_pool, conf_refusal_idx, B_conf)
+                         conf_refusal_idx = (conf_refusal_idx + B_conf) % max(len(conf_harmful_pool), 1)
+-                        with model.trace() as tracer:
+-                            with tracer.invoke(harm_rs):
+-                                injector.inject_all()
+-                                last = model.lm_head.output[:, -1]
+-                                margin = refusal_margin(
+-                                    last,
+-                                    self.anchor_refusal_toks,
+-                                    self.anchor_compliance_toks,
+-                                )
+-                                # Hinge on the first-token margin: once refusal
+-                                # tokens lead compliance tokens by the target, this
+-                                # term and its gradient are zero.
+-                                rs_loss = torch.clamp(
+-                                    refusal_score_target - margin, min=0.0
+-                                ).mean()
+-                                log_rs = rs_loss.detach().item().save()
+-                            (refusal_score_lambda * accumulation_steps * rs_loss).backward()
+-                        acc["refusal_score"] = log_rs.value
++                        # One prompt per pass to bound activation memory on 24 GB;
++                        # each row's hinge / len(harm_rs) sums to the batch mean.
++                        acc["refusal_score"] = 0.0
++                        for prompt in harm_rs:
++                            with model.trace() as tracer:
++                                with tracer.invoke([prompt]):
++                                    injector.inject_all()
++                                    last = model.lm_head.output[:, -1]
++                                    margin = refusal_margin(
++                                        last,
++                                        self.anchor_refusal_toks,
++                                        self.anchor_compliance_toks,
++                                    )
++                                    # Hinge on the first-token margin: once refusal
++                                    # tokens lead compliance tokens by the target, this
++                                    # term and its gradient are zero.
++                                    rs_loss = torch.clamp(
++                                        refusal_score_target - margin, min=0.0
++                                    ).sum() / len(harm_rs)
++                                    log_rs = rs_loss.detach().item().save()
++                                (refusal_score_lambda * accumulation_steps * rs_loss).backward()
++                            acc["refusal_score"] += log_rs.value
+ 
+                     if confusion_lambda > 0:
+                         n_train = min(
+@@ -1206,29 +1234,9 @@ class DDOOptimizer:
+                             acc["confusion"] = float("nan")
+                             cached_dirs = None  # force a re-estimate next step
+                         else:
+-                            with model.trace() as tracer:
+-                                with tracer.invoke(harm_eval):
+-                                    injector.inject_all()
+-                                    defended_h = model.lm_head.output[:, -1]
+-                                with tracer.invoke(safe_eval):
+-                                    injector.inject_all()
+-                                    defended_s = model.lm_head.output[:, -1]
+-                                with tracer.invoke(harm_eval):
+-                                    injector.inject_all()
+-                                    _apply_rfa_ablation(cached_dirs)
+-                                    attacked_h = model.lm_head.output[:, -1]
+-                                with tracer.invoke(safe_eval):
+-                                    injector.inject_all()
+-                                    _apply_rfa_ablation(cached_dirs)
+-                                    attacked_s = model.lm_head.output[:, -1]
+-
+-                                conf_loss = (
+-                                    kl_div_fn(defended_h, attacked_h).mean()
+-                                    + kl_div_fn(defended_s, attacked_s).mean()
+-                                )
+-                                log_conf = conf_loss.detach().item().save()
+-                                (confusion_lambda * accumulation_steps * conf_loss).backward()
+-                            acc["confusion"] = log_conf.value
++                            acc["confusion"] = (
++                                _confusion_term(harm_eval) + _confusion_term(safe_eval)
++                            )
+ 
+                     # Keep the gradient tangent to the unit sphere; the radial part
+                     # would only change a norm that orthogonalize() resets anyway.
+diff --git a/ddo_defense/tuning.py b/ddo_defense/tuning.py
+index 842b52a..dccfcb4 100644
+--- a/ddo_defense/tuning.py
++++ b/ddo_defense/tuning.py
+@@ -176,11 +176,11 @@ def apply_ddo_from_params(
+     )
+     r_by_layer = [dirs[i].to(adapter.device) for i in range(adapter.n_layers)]
+ 
+-    nn_model = LanguageModel(
+-        model_path, device_map=device_map, torch_dtype=torch.bfloat16,
+-        trust_remote_code=trust_remote_code,
+-    )
+-    nn_model.dispatch_model()
++    # Wrap the model already loaded above instead of loading a second copy from
++    # disk: same weights, same computation, half the GPU memory, so an 8B model
++    # fits a 24 GB card.  Training never writes to the weights, and
++    # compile_to_weights runs on this same model afterwards either way.
++    nn_model = LanguageModel(adapter.model, tokenizer=adapter.tokenizer)
+     nn_model.requires_grad_(False)
+ 
+     anchor_refusal, anchor_compliance = adapter.anchor_toks()
