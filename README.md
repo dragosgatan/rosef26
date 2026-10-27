@@ -13,21 +13,13 @@ First: accept the licence at https://huggingface.co/meta-llama/Meta-Llama-3-8B-I
 ```bash
 git clone --recurse-submodules <your repo URL> && cd rosef26
 scripts/setup_env.sh
-export HF_TOKEN=hf_...                   # never put it in a file
+export HF_TOKEN=hf_...                  
 scripts/build_ddo_llama3.sh --seed 42
 scripts/build_ddo_llama3.sh --seed 43    # optional
 git add artifacts && git commit -m "DDO build artifacts" && git push   # before shutting the box down
 ```
 
 The authors' code is installed with a memory patch so it fits in 24 GB; see [`patches/README.md`](patches/README.md).
-
-**Outputs:**
-
-| Path | What | In git |
-|---|---|---|
-| `models/hf_cache/` | the original model download | no |
-| `models/ddo_llama3_seed<N>/` | the defended model (~16 GB) | no |
-| `artifacts/ddo_llama3_seed<N>/` | `build.log`, `ddo_defense.json`, `config.json`, `manifest.json` (versions, GPU, sha256 of every shard), `edits.safetensors` (the edited neurons, ~200 KB) | yes |
 
 **Rebuild the exact defended model later** (any machine, CPU is enough):
 
