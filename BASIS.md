@@ -4,7 +4,7 @@ RoSEF 2026, category III: Tehnologia informației. The competition runs 30-31 Oc
 
 ## The problem
 
-Open-weight chat models are trained to refuse harmful requests. **Abliteration** (Refusal Feature Ablation, RFA) removes that safeguard in minutes, with no training:
+Open-weight chat models are trained to refuse harmful requests. **Abliteration** (Refusal Feature Ablation, RFA) removes that safeguard easily:
 
 1. Run the model on harmful and harmless prompts.
 2. Subtract the two mean activations. The result is the *refusal direction* r̂.
@@ -29,7 +29,7 @@ Open-weight chat models are trained to refuse harmful requests. **Abliteration**
 - **RQ1:** Can default DDO decoys be found from the weights alone (norm ratio, gate/up cosine, alignment with r̂)? Does removing them restore abliteration?
 - **RQ2:** Do the authors' proposed camouflages hide the decoys from these detectors?
 - **RQ3:** Do camouflaged decoys still protect the model? What is the trade-off between stealth and protection?
-- **RQ4 (stretch):** Can camouflaged decoys still be caught by their *behaviour*, i.e. abnormal activations on harmful prompts?
+- **RQ4 (stretch):** Can camouflaged decoys still be caught by their behaviour, i.e. abnormal activations on harmful prompts?
 
 ## Hypotheses
 
@@ -42,7 +42,7 @@ Open-weight chat models are trained to refuse harmful requests. **Abliteration**
 
 | Step | What we do |
 |---|---|
-| Model | Qwen3-1.7B-Instruct (same family as the paper's Qwen3-8B); Llama-3.2-1B/3B if time allows |
+| Model | Llama 3 8b Instruct |
 | Baseline | Standard RFA on the undefended model |
 | Defense | DDO via the authors' code (`ddo-apply`, replace mode first) |
 | Ground truth | Diff of the defended weights against the original, which gives the exact edited neurons |
@@ -50,22 +50,10 @@ Open-weight chat models are trained to refuse harmful requests. **Abliteration**
 | Undo attack | Zero the flagged neurons, then RFA |
 | Camouflage | `√β` redistribution, sweep of `ε ∈ {0, 0.05, 0.1, 0.2, 0.4}`, `n_readers > 1` |
 
-**Metrics:**
-- ASR on JailbreakBench (100 behaviours), judged by Llama-Guard-3-1B plus refusal-string matching, with 50 responses hand-labelled to check the judge.
-- Decoy rank and detector AUROC.
-- Over-refusal on XSTest.
-- Coherence, and MMLU on a subset.
-- At least 2 seeds for each headline result, reported with bootstrap confidence intervals.
-
-**Compute:** free Kaggle or Colab T4 GPUs.
 
 ## Expected main figure
 
 Detectability (decoy rank or AUROC) plotted against protection (ASR under RFA), for each camouflage setting.
-
-## Fallback
-
-If DDO does not lower ASR on small models, that is itself a finding: *DDO does not transfer to 1-3B models*. RQ1 and RQ2 are answered on the weights regardless, since they do not need a working defense.
 
 ## Ethics
 
