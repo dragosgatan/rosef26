@@ -26,6 +26,17 @@ from safetensors.torch import load_file, save_file
 from collect_artifacts import REPO, differing_tensors
 
 
+def original_snapshot(edits_path) -> str:
+    """The pinned original model recorded in an edits file (downloaded if missing)."""
+    os.environ.setdefault("HF_HOME", str(REPO / "models" / "hf_cache"))
+    from huggingface_hub import snapshot_download
+
+    with safe_open(edits_path, "pt") as f:
+        meta = f.metadata()
+    return snapshot_download(meta["model_id"], revision=meta["model_revision"],
+                             allow_patterns=["*.json", "model-*.safetensors"])
+
+
 def reapply(edits_path, original, out) -> None:
     out = Path(out)
     if out.exists() and any(out.iterdir()):
@@ -63,17 +74,7 @@ def main() -> None:
     p.add_argument("--check", help="checkpoint the result must equal bit for bit")
     args = p.parse_args()
 
-    original = args.original
-    if original is None:
-        os.environ.setdefault("HF_HOME", str(REPO / "models" / "hf_cache"))
-        from huggingface_hub import snapshot_download
-
-        with safe_open(args.edits, "pt") as f:
-            meta = f.metadata()
-        original = snapshot_download(meta["model_id"], revision=meta["model_revision"],
-                                     allow_patterns=["*.json", "model-*.safetensors"])
-
-    reapply(args.edits, original, args.out)
+    reapply(args.edits, args.original or original_snapshot(args.edits), args.out)
     print(f"wrote {args.out}")
 
     if args.check:

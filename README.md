@@ -6,17 +6,16 @@ What we aim to achieve: Breaking DDO by detection, propose/test a Camouflage of 
 
 ## Building the DDO-defended Llama-3-8B
 
-Authors' code, their published Llama-3 config, bf16. Needs a 24 GB GPU (RTX 3090), ~1-1.5 h for two seeds.
+Authors' code, their published Llama-3 config, bf16. Needs a 24 GB GPU (RTX 3090), ~1-1.5 h for two seeds. Full box walkthrough: [INSTRUCTIONS.md](INSTRUCTIONS.md).
 
-First: accept the licence at https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct (approval is manual, status at https://huggingface.co/settings/gated-repos) and create a Read token at https://huggingface.co/settings/tokens.
+First: accept the Meta Llama 3 licence at https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct (it also covers Llama Guard 2) and create a Read token at https://huggingface.co/settings/tokens.
 
 ```bash
 git clone --recurse-submodules <your repo URL> && cd rosef26
 scripts/setup_env.sh
-export HF_TOKEN=hf_...                  
+export HF_TOKEN=hf_...
 scripts/build_ddo_llama3.sh --seed 42
 scripts/build_ddo_llama3.sh --seed 43    # optional
-git add artifacts && git commit -m "DDO build artifacts" && git push   # before shutting the box down
 ```
 
 The authors' code is installed with a memory patch so it fits in 24 GB; see [`patches/README.md`](patches/README.md).
@@ -28,6 +27,15 @@ The authors' code is installed with a memory patch so it fits in 24 GB; see [`pa
     --edits artifacts/ddo_llama3_seed42/edits.safetensors \
     --out models/ddo_llama3_seed42
 ```
+
+## Inspect and attack
+
+```bash
+.venv/bin/python scripts/inspect_decoys.py --edits artifacts/ddo_llama3_seed42/edits.safetensors   # CPU
+scripts/run_attacks.sh --seed 42                                                                  # GPU
+```
+
+`inspect_decoys.py` ranks each decoy among all normal neurons by gate/up cosine, norm ratio and down norm (`inspect.json` next to the edits). `run_attacks.sh` runs RFA after each undo method and writes ASR to `results/`. Raw completions stay in `models/results/` and are never committed.
 
 ## Credits
 
