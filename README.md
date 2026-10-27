@@ -8,8 +8,6 @@ What we aim to achieve: Breaking DDO by detection, propose/test a Camouflage of 
 
 Authors' code, their published Llama-3 config, bf16. Needs a 24 GB GPU (RTX 3090), ~1-1.5 h for two seeds. Full box walkthrough: [INSTRUCTIONS.md](INSTRUCTIONS.md).
 
-First: accept the Meta Llama 3 licence at https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct (it also covers Llama Guard 2) and create a Read token at https://huggingface.co/settings/tokens.
-
 ```bash
 git clone --recurse-submodules <your repo URL> && cd rosef26
 scripts/setup_env.sh
