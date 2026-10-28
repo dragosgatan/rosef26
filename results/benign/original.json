@@ -1,0 +1,10 @@
+{
+  "timestamp_utc": "2026-10-28T22:46:32+00:00",
+  "model": "/workspace/.hf_home/hub/models--meta-llama--Meta-Llama-3-8B-Instruct/snapshots/8afb486c1db24fe5011ec46dfbe5b5dccdb575c2",
+  "n_prompts": 100,
+  "split": "harmless/test",
+  "max_new_tokens": 128,
+  "refusal_rate": 0.0,
+  "degenerate_rate": 0.0,
+  "mean_words": 83.36
+}

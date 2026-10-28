@@ -1,0 +1,10 @@
+{
+  "timestamp_utc": "2026-10-28T22:47:06+00:00",
+  "model": "models/ddo_llama3_seed42",
+  "n_prompts": 100,
+  "split": "harmless/test",
+  "max_new_tokens": 128,
+  "refusal_rate": 0.03,
+  "degenerate_rate": 0.0,
+  "mean_words": 81.53
+}
