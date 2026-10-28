@@ -1,0 +1,34 @@
+{
+  "timestamp_utc": "2026-10-28T20:45:37+00:00",
+  "seed": 42,
+  "model_id": "meta-llama/Meta-Llama-3-8B-Instruct",
+  "model_revision": "8afb486c1db24fe5011ec46dfbe5b5dccdb575c2",
+  "ddo_submodule_commit": "a26f23e0149a0050b822a4913a2a147f67553810",
+  "patch_sha256": "e2d5042a1f52f8c8a70af54a42f4cacd18a8808815ffb95bd485fd0f4f7f4200",
+  "python": "3.12.15",
+  "torch_cuda": "12.1",
+  "packages": {
+    "torch": "2.3.0+cu121",
+    "transformers": "4.51.0",
+    "tokenizers": "0.21.4",
+    "accelerate": "0.33.0",
+    "nnsight": "0.3.7",
+    "safetensors": "0.8.0",
+    "huggingface_hub": "0.36.2",
+    "numpy": "1.26.4",
+    "ddo-defense": "0.1.0"
+  },
+  "gpu": "NVIDIA GeForce RTX 3090, 580.173.02, 24576 MiB",
+  "env": {
+    "CUBLAS_WORKSPACE_CONFIG": ":16:8",
+    "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True"
+  },
+  "command": "/root/rosef26/.venv/bin/python -m ddo_defense.cli apply --model_path /root/rosef26/models/hf_cache/hub/models--meta-llama--Meta-Llama-3-8B-Instruct/snapshots/8afb486c1db24fe5011ec46dfbe5b5dccdb575c2 --layer_start 6 --layer_end 15 --init_beta 1.30 --init_scale 0.463 --confusion_lambda 1.12 --lr 0.0026 --epochs 2 --compile_mode replace --seed 42 --save_path /root/rosef26/models/ddo_llama3_seed42",
+  "shards_sha256": {
+    "model-00001-of-00004.safetensors": "a571e691389ba5ce30498f6dd5a0e3bf1e414904c1982e749454ff48cf1e05f3",
+    "model-00002-of-00004.safetensors": "98a15ef06a247fd8a6e0323704bb3a1532f485766f834dcda958928097ae4cf6",
+    "model-00003-of-00004.safetensors": "3acdd690e65c24f42a24581b8467af98bd3ca357444580f8012aacd2bd607921",
+    "model-00004-of-00004.safetensors": "67e9ad31c8c32abf3a55ee7fc7217b3ecb35fd3c74d98a5bd233e0e4d6964f46"
+  },
+  "edits_sha256": "3c1e1038dc4f785837b9b1a5a8f6e31398c2d378df9894b980137ba3913a0e4b"
+}

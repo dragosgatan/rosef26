@@ -19,6 +19,8 @@ python-socketio[client]==5.17.0
 pydantic==2.14.1
 sentencepiece==0.2.2
 einops==0.8.2
+# nnsight imports PIL but doesn't declare it (torchvision normally brings it in)
+pillow==10.4.0
 
 # Our scripts and tests
 huggingface_hub==0.36.2

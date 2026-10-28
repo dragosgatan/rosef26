@@ -1,0 +1,19 @@
+{
+  "model_id": "meta-llama/Meta-Llama-3-8B-Instruct",
+  "model_revision": "8afb486c1db24fe5011ec46dfbe5b5dccdb575c2",
+  "seed": 43,
+  "params": {
+    "layer_start": 6,
+    "layer_end": 15,
+    "init_beta": 1.3,
+    "init_scale": 0.463,
+    "confusion_lambda": 1.12,
+    "lr": 0.0026,
+    "epochs": 2,
+    "compile_mode": "replace",
+    "n_decoys": 1,
+    "n_readers": 1,
+    "reader_gamma": 0.3
+  },
+  "command": "/root/rosef26/.venv/bin/python -m ddo_defense.cli apply --model_path /root/rosef26/models/hf_cache/hub/models--meta-llama--Meta-Llama-3-8B-Instruct/snapshots/8afb486c1db24fe5011ec46dfbe5b5dccdb575c2 --layer_start 6 --layer_end 15 --init_beta 1.30 --init_scale 0.463 --confusion_lambda 1.12 --lr 0.0026 --epochs 2 --compile_mode replace --seed 43 --save_path /root/rosef26/models/ddo_llama3_seed43"
+}

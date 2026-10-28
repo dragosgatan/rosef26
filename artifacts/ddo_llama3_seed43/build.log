@@ -1,0 +1,85 @@
+== build seed 43 at 2026-10-28T21:27:37Z ==
+licence ok: meta-llama/Meta-Llama-3-8B-Instruct@8afb486c1db24fe5011ec46dfbe5b5dccdb575c2
+preflight ok: GPU 24576 MiB, output /root/rosef26/models/ddo_llama3_seed43
+Fetching 11 files:   0%|          | 0/11 [00:00<?, ?it/s]Fetching 11 files: 100%|██████████| 11/11 [00:00<00:00, 2736.66it/s]
+original model: /root/rosef26/models/hf_cache/hub/models--meta-llama--Meta-Llama-3-8B-Instruct/snapshots/8afb486c1db24fe5011ec46dfbe5b5dccdb575c2
+running: /root/rosef26/.venv/bin/python -m ddo_defense.cli apply --model_path /root/rosef26/models/hf_cache/hub/models--meta-llama--Meta-Llama-3-8B-Instruct/snapshots/8afb486c1db24fe5011ec46dfbe5b5dccdb575c2 --layer_start 6 --layer_end 15 --init_beta 1.30 --init_scale 0.463 --confusion_lambda 1.12 --lr 0.0026 --epochs 2 --compile_mode replace --seed 43 --save_path /root/rosef26/models/ddo_llama3_seed43
+  note: no --config given, so the defaults are the built-in Llama-3 configuration. On any other model, run ddo-tune first.
+  configuration:
+    layer_start          6
+    layer_end            15
+    init_beta            1.3
+    init_scale           0.463
+    confusion_lambda     1.12
+    lr                   0.0026
+    epochs               2
+    compile_mode         replace
+    n_decoys             1
+    n_readers            1
+    reader_gamma         0.3
+Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards:  25%|██▌       | 1/4 [00:01<00:05,  1.69s/it]Loading checkpoint shards:  50%|█████     | 2/4 [00:03<00:03,  1.63s/it]Loading checkpoint shards:  75%|███████▌  | 3/4 [00:04<00:01,  1.60s/it]Loading checkpoint shards: 100%|██████████| 4/4 [00:05<00:00,  1.11s/it]Loading checkpoint shards: 100%|██████████| 4/4 [00:05<00:00,  1.30s/it]
+DDO: 9 layers, 1 decoy(s) per layer, refusal_toks=[40], device=cuda:0
+targets:   0%|          | 0/8 [00:00<?, ?it/s]You're using a PreTrainedTokenizerFast tokenizer. Please note that with a fast tokenizer, using the `__call__` method is faster than using a method to encode the text followed by a call to the `pad` method to get a padded encoding.
+/root/rosef26/.venv/lib/python3.12/site-packages/transformers/generation/configuration_utils.py:631: UserWarning: `do_sample` is set to `False`. However, `temperature` is set to `0.6` -- this flag is only used in sample-based generation modes. You should set `do_sample=True` or unset `temperature`.
+  warnings.warn(
+/root/rosef26/.venv/lib/python3.12/site-packages/transformers/generation/configuration_utils.py:636: UserWarning: `do_sample` is set to `False`. However, `top_p` is set to `0.9` -- this flag is only used in sample-based generation modes. You should set `do_sample=True` or unset `top_p`.
+  warnings.warn(
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+targets:  12%|█▎        | 1/8 [00:01<00:07,  1.13s/it]Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+targets:  25%|██▌       | 2/8 [00:02<00:06,  1.08s/it]Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+targets:  38%|███▊      | 3/8 [00:03<00:05,  1.08s/it]Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+targets:  50%|█████     | 4/8 [00:04<00:04,  1.08s/it]Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+targets:  62%|██████▎   | 5/8 [00:05<00:03,  1.08s/it]Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+targets:  75%|███████▌  | 6/8 [00:06<00:02,  1.08s/it]Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+targets:  88%|████████▊ | 7/8 [00:07<00:01,  1.08s/it]Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+targets: 100%|██████████| 8/8 [00:08<00:00,  1.07s/it]targets: 100%|██████████| 8/8 [00:08<00:00,  1.08s/it]
+  warning: 2/128 refusal targets do not read as refusals (2%). The refusal loss trains toward the base model's own continuation, so those prompts pull toward compliance.
+targets:   0%|          | 0/8 [00:00<?, ?it/s]Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+targets:  12%|█▎        | 1/8 [00:01<00:07,  1.08s/it]Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+targets:  25%|██▌       | 2/8 [00:02<00:06,  1.08s/it]Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+targets:  38%|███▊      | 3/8 [00:03<00:05,  1.09s/it]Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+targets:  50%|█████     | 4/8 [00:04<00:04,  1.08s/it]Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+targets:  62%|██████▎   | 5/8 [00:05<00:03,  1.08s/it]Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+targets:  75%|███████▌  | 6/8 [00:06<00:02,  1.08s/it]Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+targets:  88%|████████▊ | 7/8 [00:07<00:01,  1.08s/it]Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+targets: 100%|██████████| 8/8 [00:08<00:00,  1.07s/it]targets: 100%|██████████| 8/8 [00:08<00:00,  1.08s/it]
+  filtering confusion pools by refusal score on the defended model
+  confusion pools: 14 harmful, 126 harmless, batch 14
+
+epoch 0
+    re-estimating attack directions on 14 prompts
+  step 16: loss=5.4071 (refusal=1.2678 score=0.0000 retain=0.0027 confusion=3.6933) refusal_logodds=-9.61
+  step 32: loss=4.4505 (refusal=0.7054 score=3.0893 retain=0.0019 confusion=0.5838) refusal_logodds=-6.67
+  step 48: loss=1.3935 (refusal=0.6993 score=0.0357 retain=0.0033 confusion=0.5850) refusal_logodds=-2.81
+  step 64: loss=0.8065 (refusal=0.4396 score=0.0000 retain=0.0042 confusion=0.3238) refusal_logodds=-1.55
+  step 80: loss=0.5731 (refusal=0.3018 score=0.0000 retain=0.0039 confusion=0.2388) refusal_logodds=-0.39
+  step 96: loss=0.4427 (refusal=0.2129 score=0.0000 retain=0.0050 confusion=0.2007) refusal_logodds=0.02
+  step 112: loss=0.5221 (refusal=0.3010 score=0.0000 retain=0.0124 confusion=0.1864) refusal_logodds=-1.08
+  step 128: loss=0.3645 (refusal=0.1784 score=0.0000 retain=0.0054 confusion=0.1613) refusal_logodds=1.15
+
+epoch 1
+  step 144: loss=0.3922 (refusal=0.2150 score=0.0000 retain=0.0063 confusion=0.1526) refusal_logodds=0.60
+    re-estimating attack directions on 14 prompts
+  step 160: loss=2.6558 (refusal=0.1773 score=0.0000 retain=0.0064 confusion=2.2072) refusal_logodds=2.99
+  step 176: loss=0.9144 (refusal=0.1235 score=0.0000 retain=0.0059 confusion=0.7010) refusal_logodds=3.12
+  step 192: loss=0.5806 (refusal=0.1097 score=0.0000 retain=0.0063 confusion=0.4148) refusal_logodds=2.48
+  step 208: loss=0.5618 (refusal=0.1459 score=0.0000 retain=0.0157 confusion=0.3574) refusal_logodds=2.67
+  reducing lr to 0.00026
+  step 224: loss=0.4845 (refusal=0.1538 score=0.0000 retain=0.0105 confusion=0.2859) refusal_logodds=2.42
+  step 240: loss=0.4821 (refusal=0.1521 score=0.0000 retain=0.0068 confusion=0.2885) refusal_logodds=1.86
+  step 256: loss=0.4916 (refusal=0.1579 score=0.0000 retain=0.0109 confusion=0.2883) refusal_logodds=2.75
+
+training finished in 111.5s
+  layer 6: beta=[1.2999999523162842], scale=[0.46299999952316284] (fixed)
+  layer 7: beta=[1.2999999523162842], scale=[0.46299999952316284] (fixed)
+  layer 8: beta=[1.2999999523162842], scale=[0.46299999952316284] (fixed)
+  layer 9: beta=[1.2999999523162842], scale=[0.46299999952316284] (fixed)
+  layer 10: beta=[1.2999999523162842], scale=[0.46299999952316284] (fixed)
+
+coherence gate: PASS
+  saved to /root/rosef26/models/ddo_llama3_seed43
+diffing defended weights against the original ...
+  edits match ddo_defense.json: layers [6, 7, 8, 9, 10, 11, 12, 13, 14], neurons {'6': [5153], '7': [11231], '8': [6787], '9': [11057], '10': [1340], '11': [1943], '12': [2180], '13': [8022], '14': [3688]}
+hashing shards ...
+  wrote /root/rosef26/artifacts/ddo_llama3_seed43
+== done: model in /root/rosef26/models/ddo_llama3_seed43, record in /root/rosef26/artifacts/ddo_llama3_seed43 ==
