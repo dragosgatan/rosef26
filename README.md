@@ -9,7 +9,7 @@ What we aim to achieve: Breaking DDO by detection, propose/test a Camouflage of 
 Authors' code, their published Llama-3 config, bf16. Needs a 24 GB GPU (RTX 3090), ~1-1.5 h for two seeds. Full box walkthrough: [INSTRUCTIONS.md](INSTRUCTIONS.md).
 
 ```bash
-git clone --recurse-submodules <your repo URL> && cd rosef26
+git clone --recurse-submodules https://github.com/dragosgatan/rosef26.git && cd rosef26
 scripts/setup_env.sh
 export HF_TOKEN=hf_...
 scripts/build_ddo_llama3.sh --seed 42
