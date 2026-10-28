@@ -1,0 +1,188 @@
+{
+  "defense_type": "ddo",
+  "compile_mode": "additive",
+  "target_layers": [
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14
+  ],
+  "skipped_layers": [],
+  "n_decoys": 1,
+  "K": 1,
+  "n_triggers": 1,
+  "trigger_source": "single",
+  "reader_gamma": 0.3,
+  "seed": 43,
+  "betas": {
+    "6": [
+      1.2999999523162842
+    ],
+    "7": [
+      1.2999999523162842
+    ],
+    "8": [
+      1.2999999523162842
+    ],
+    "9": [
+      1.2999999523162842
+    ],
+    "10": [
+      1.2999999523162842
+    ],
+    "11": [
+      1.2999999523162842
+    ],
+    "12": [
+      1.2999999523162842
+    ],
+    "13": [
+      1.2999999523162842
+    ],
+    "14": [
+      1.2999999523162842
+    ]
+  },
+  "scales": {
+    "6": [
+      0.46299999952316284
+    ],
+    "7": [
+      0.46299999952316284
+    ],
+    "8": [
+      0.46299999952316284
+    ],
+    "9": [
+      0.46299999952316284
+    ],
+    "10": [
+      0.46299999952316284
+    ],
+    "11": [
+      0.46299999952316284
+    ],
+    "12": [
+      0.46299999952316284
+    ],
+    "13": [
+      0.46299999952316284
+    ],
+    "14": [
+      0.46299999952316284
+    ]
+  },
+  "neuron_indices": {
+    "6": [
+      5153
+    ],
+    "7": [
+      11231
+    ],
+    "8": [
+      6787
+    ],
+    "9": [
+      11057
+    ],
+    "10": [
+      1340
+    ],
+    "11": [
+      1943
+    ],
+    "12": [
+      2180
+    ],
+    "13": [
+      8022
+    ],
+    "14": [
+      3688
+    ]
+  },
+  "layer_info": {
+    "6": {
+      "n_triggers": 1,
+      "trigger_source": "single",
+      "n_decoy_neurons": 1,
+      "neuron_selection": "low_norm",
+      "compile_mode": "additive"
+    },
+    "7": {
+      "n_triggers": 1,
+      "trigger_source": "single",
+      "n_decoy_neurons": 1,
+      "neuron_selection": "low_norm",
+      "compile_mode": "additive"
+    },
+    "8": {
+      "n_triggers": 1,
+      "trigger_source": "single",
+      "n_decoy_neurons": 1,
+      "neuron_selection": "low_norm",
+      "compile_mode": "additive"
+    },
+    "9": {
+      "n_triggers": 1,
+      "trigger_source": "single",
+      "n_decoy_neurons": 1,
+      "neuron_selection": "low_norm",
+      "compile_mode": "additive"
+    },
+    "10": {
+      "n_triggers": 1,
+      "trigger_source": "single",
+      "n_decoy_neurons": 1,
+      "neuron_selection": "low_norm",
+      "compile_mode": "additive"
+    },
+    "11": {
+      "n_triggers": 1,
+      "trigger_source": "single",
+      "n_decoy_neurons": 1,
+      "neuron_selection": "low_norm",
+      "compile_mode": "additive"
+    },
+    "12": {
+      "n_triggers": 1,
+      "trigger_source": "single",
+      "n_decoy_neurons": 1,
+      "neuron_selection": "low_norm",
+      "compile_mode": "additive"
+    },
+    "13": {
+      "n_triggers": 1,
+      "trigger_source": "single",
+      "n_decoy_neurons": 1,
+      "neuron_selection": "low_norm",
+      "compile_mode": "additive"
+    },
+    "14": {
+      "n_triggers": 1,
+      "trigger_source": "single",
+      "n_decoy_neurons": 1,
+      "neuron_selection": "low_norm",
+      "compile_mode": "additive"
+    }
+  },
+  "params": {
+    "layer_start": 6,
+    "layer_end": 15,
+    "init_beta": 1.3,
+    "init_scale": 0.463,
+    "confusion_lambda": 1.12,
+    "lr": 0.0026,
+    "epochs": 2,
+    "compile_mode": "additive",
+    "n_decoys": 1,
+    "n_readers": 1,
+    "reader_gamma": 0.3
+  },
+  "coherence_passed": true
+}

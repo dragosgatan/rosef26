@@ -3,6 +3,7 @@
 usage:
   .venv/bin/python scripts/attack.py --model DIR --tag seed42/defended \
       [--undo none|oracle|gate_up_cos|down_norm|norm_ratio] [--m 1] [--layers all|6-14] [--edits FILE]
+      [--no-rfa]   (judge the model as it is, e.g. one already abliterated by another tool)
 
 The paper's Table 21 setup: zero the top-m down_proj columns per layer, then
 3-point RFA (rank 1, 128 unfiltered probes) on JailbreakBench, judged by
@@ -66,6 +67,7 @@ def main() -> None:
     p.add_argument("--m", type=int, default=1, help="neurons zeroed per layer")
     p.add_argument("--layers", default="all", help="'all' or an inclusive range like 6-14")
     p.add_argument("--edits", help="edits.safetensors: needed for oracle, reports decoy hits otherwise")
+    p.add_argument("--no-rfa", action="store_true", help="skip RFA; same prompts and decoding")
     args = p.parse_args()
     if args.undo == "oracle" and not args.edits:
         p.error("--undo oracle needs --edits")
@@ -92,9 +94,17 @@ def main() -> None:
         decoys_zeroed = f"{hit}/{sum(map(len, decoys.values()))}"
         print(f"decoys zeroed: {decoys_zeroed}")
 
-    attack = run_rfa(adapter, rank=1, n_probes=128, ablation_mode="three_point",
-                     eval_set="jailbreakbench")
-    completions = attack.pop("completions")
+    if args.no_rfa:
+        from ddo_defense.attacks.rfa import generate_under_attack
+        from ddo_defense.data import load_eval_set
+        # The authors' unattacked baseline: run_rfa's decoding, with no directions ablated.
+        completions = generate_under_attack(adapter, load_eval_set("jailbreakbench"), directions=None)
+        attack = {"attack": "none", "eval_set": "jailbreakbench", "max_new_tokens": 512,
+                  "n_completions": len(completions)}
+    else:
+        attack = run_rfa(adapter, rank=1, n_probes=128, ablation_mode="three_point",
+                         eval_set="jailbreakbench")
+        completions = attack.pop("completions")
     raw.parent.mkdir(parents=True, exist_ok=True)
     raw.write_text(json.dumps(completions, indent=2) + "\n")
     print(f"wrote raw completions to {raw}")

@@ -1,0 +1,255 @@
+{
+  "base": "ddo_llama3_seed42",
+  "gate_norm": 1.3,
+  "up_norm": 0.8,
+  "down_norm": 0.8,
+  "split": 1,
+  "n_null": 1024,
+  "kl_mean": 0.0012579307658597827,
+  "kl_max": 0.015932083129882812,
+  "layers": {
+    "6": {
+      "neurons": [
+        5153
+      ],
+      "noise_leak_rms_vs_r": 0.01007068995386362,
+      "decoys": [
+        {
+          "neuron": 5153,
+          "gate_up_cos": {
+            "value": 0.7233731746673584,
+            "rank": 3
+          },
+          "norm_ratio": {
+            "value": 1.6254130601882935,
+            "rank": 1289
+          },
+          "down_norm": {
+            "value": 0.7999845147132874,
+            "rank": 12
+          },
+          "act_cos": {
+            "value": 0.9999533295631409,
+            "rank": 1
+          }
+        }
+      ]
+    },
+    "7": {
+      "neurons": [
+        11231
+      ],
+      "noise_leak_rms_vs_r": 0.017648965120315552,
+      "decoys": [
+        {
+          "neuron": 11231,
+          "gate_up_cos": {
+            "value": 0.7235094308853149,
+            "rank": 1
+          },
+          "norm_ratio": {
+            "value": 1.624885082244873,
+            "rank": 999
+          },
+          "down_norm": {
+            "value": 0.8000292181968689,
+            "rank": 63
+          },
+          "act_cos": {
+            "value": 0.9998713135719299,
+            "rank": 1
+          }
+        }
+      ]
+    },
+    "8": {
+      "neurons": [
+        6787
+      ],
+      "noise_leak_rms_vs_r": 0.02089366503059864,
+      "decoys": [
+        {
+          "neuron": 6787,
+          "gate_up_cos": {
+            "value": 0.7233266830444336,
+            "rank": 2
+          },
+          "norm_ratio": {
+            "value": 1.6250423192977905,
+            "rank": 1380
+          },
+          "down_norm": {
+            "value": 0.8000691533088684,
+            "rank": 79
+          },
+          "act_cos": {
+            "value": 0.999785304069519,
+            "rank": 1
+          }
+        }
+      ]
+    },
+    "9": {
+      "neurons": [
+        11057
+      ],
+      "noise_leak_rms_vs_r": 0.020669694989919662,
+      "decoys": [
+        {
+          "neuron": 11057,
+          "gate_up_cos": {
+            "value": 0.723395049571991,
+            "rank": 3
+          },
+          "norm_ratio": {
+            "value": 1.624882698059082,
+            "rank": 1501
+          },
+          "down_norm": {
+            "value": 0.7999950051307678,
+            "rank": 37
+          },
+          "act_cos": {
+            "value": 0.9998043179512024,
+            "rank": 1
+          }
+        }
+      ]
+    },
+    "10": {
+      "neurons": [
+        1340
+      ],
+      "noise_leak_rms_vs_r": 0.02090529352426529,
+      "decoys": [
+        {
+          "neuron": 1340,
+          "gate_up_cos": {
+            "value": 0.7234066724777222,
+            "rank": 2
+          },
+          "norm_ratio": {
+            "value": 1.6248120069503784,
+            "rank": 1069
+          },
+          "down_norm": {
+            "value": 0.8000000715255737,
+            "rank": 53
+          },
+          "act_cos": {
+            "value": 0.9997938275337219,
+            "rank": 1
+          }
+        }
+      ]
+    },
+    "11": {
+      "neurons": [
+        1943
+      ],
+      "noise_leak_rms_vs_r": 0.01926311105489731,
+      "decoys": [
+        {
+          "neuron": 1943,
+          "gate_up_cos": {
+            "value": 0.7235531210899353,
+            "rank": 6
+          },
+          "norm_ratio": {
+            "value": 1.6247752904891968,
+            "rank": 986
+          },
+          "down_norm": {
+            "value": 0.799981951713562,
+            "rank": 145
+          },
+          "act_cos": {
+            "value": 0.9998394250869751,
+            "rank": 1
+          }
+        }
+      ]
+    },
+    "12": {
+      "neurons": [
+        2180
+      ],
+      "noise_leak_rms_vs_r": 0.01933957450091839,
+      "decoys": [
+        {
+          "neuron": 2180,
+          "gate_up_cos": {
+            "value": 0.7232991456985474,
+            "rank": 10
+          },
+          "norm_ratio": {
+            "value": 1.6250723600387573,
+            "rank": 878
+          },
+          "down_norm": {
+            "value": 0.7999866008758545,
+            "rank": 243
+          },
+          "act_cos": {
+            "value": 0.9998294711112976,
+            "rank": 1
+          }
+        }
+      ]
+    },
+    "13": {
+      "neurons": [
+        8022
+      ],
+      "noise_leak_rms_vs_r": 0.022228291258215904,
+      "decoys": [
+        {
+          "neuron": 8022,
+          "gate_up_cos": {
+            "value": 0.723288893699646,
+            "rank": 13
+          },
+          "norm_ratio": {
+            "value": 1.624908685684204,
+            "rank": 709
+          },
+          "down_norm": {
+            "value": 0.7999979257583618,
+            "rank": 134
+          },
+          "act_cos": {
+            "value": 0.9997811913490295,
+            "rank": 1
+          }
+        }
+      ]
+    },
+    "14": {
+      "neurons": [
+        3688
+      ],
+      "noise_leak_rms_vs_r": 0.02044055052101612,
+      "decoys": [
+        {
+          "neuron": 3688,
+          "gate_up_cos": {
+            "value": 0.7233213186264038,
+            "rank": 7
+          },
+          "norm_ratio": {
+            "value": 1.6248968839645386,
+            "rank": 863
+          },
+          "down_norm": {
+            "value": 0.8000496625900269,
+            "rank": 146
+          },
+          "act_cos": {
+            "value": 0.9998145699501038,
+            "rank": 1
+          }
+        }
+      ]
+    }
+  }
+}
