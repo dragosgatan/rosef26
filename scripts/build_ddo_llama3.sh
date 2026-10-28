@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Build the DDO-defended Llama-3-8B-Instruct with the authors' published config.
-# usage: scripts/build_ddo_llama3.sh --seed 42 [--out DIR]
+# usage: scripts/build_ddo_llama3.sh --seed 42 [--out DIR] [--name NAME] [-- extra apply flags]
+#   e.g. --name additive_seed42 -- --compile_mode additive   (NAME defaults to ddo_llama3_seed42)
 set -euo pipefail
 
 MODEL_ID=meta-llama/Meta-Llama-3-8B-Instruct
@@ -13,19 +14,22 @@ MIN_DISK_GB=60
 
 die() { echo "error: $*" >&2; exit 1; }
 
-SEED= OUT=
+SEED= OUT= NAME= EXTRA=()
 while (($#)); do
   case $1 in
     --seed) SEED=${2:?--seed needs a value}; shift 2 ;;
     --out) OUT=${2:?--out needs a value}; shift 2 ;;
-    *) die "unknown argument $1 (usage: --seed N [--out DIR])" ;;
+    --name) NAME=${2:?--name needs a value}; shift 2 ;;
+    --) shift; EXTRA=("$@"); break ;;
+    *) die "unknown argument $1 (usage: --seed N [--out DIR] [--name NAME] [-- apply flags])" ;;
   esac
 done
 [[ $SEED =~ ^[0-9]+$ ]] || die "--seed N is required"
 
 REPO=$(realpath "$(dirname "$0")/..")
-OUT=$(realpath -m "${OUT:-$REPO/models/ddo_llama3_seed$SEED}")
-ART=$REPO/artifacts/ddo_llama3_seed$SEED
+NAME=${NAME:-ddo_llama3_seed$SEED}
+OUT=$(realpath -m "${OUT:-$REPO/models/$NAME}")
+ART=$REPO/artifacts/$NAME
 PY=$REPO/.venv/bin/python
 [[ -e $ART/manifest.json ]] && die "$ART already holds a finished build; move it away first"
 
@@ -99,7 +103,7 @@ CMD=("$PY" -m ddo_defense.cli apply
   --layer_start 6 --layer_end 15
   --init_beta 1.30 --init_scale 0.463 --confusion_lambda 1.12
   --lr 0.0026 --epochs 2 --compile_mode replace
-  --seed "$SEED" --save_path "$OUT")
+  --seed "$SEED" --save_path "$OUT" "${EXTRA[@]}")
 echo "running: ${CMD[*]}"
 # Offline so nothing can silently fetch a different model revision.
 HF_HUB_OFFLINE=1 "${CMD[@]}"
