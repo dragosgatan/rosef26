@@ -1,0 +1,597 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Decoy Playground</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f4f5f6; --panel: #fff; --ink: #2b313b; --muted: #6b7380; --line: #e3e6ea; --grey: #c4cad2;
+    --red: #d0453a; --red-soft: #fbe9e7; --blue: #2f6fd0; --blue-soft: #e8f0fb; --ok: #2e8a4e; --ok-soft: #e6f4ea;
+    --mono: "JetBrains Mono", "DejaVu Sans Mono", Menlo, monospace;
+    --sans: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body { background: var(--bg); color: var(--ink); font: 400 15px/1.45 var(--sans); display: flex; flex-direction: column; height: 100vh; -webkit-tap-highlight-color: transparent; }
+  @media (min-width: 1600px) { body { font-size: 17px; } }
+  h2 { font: 700 0.78em var(--mono); text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 0 0 .6em; }
+  button { font: inherit; color: inherit; cursor: pointer; }
+  button:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+  b { font-weight: 600; }
+
+  header { display: flex; align-items: center; gap: 14px; padding: 10px 18px; background: var(--panel); border-bottom: 1px solid var(--line); }
+  .brand { font: 700 1.2em var(--mono); flex: 1; }
+  .reset { border: 2px solid var(--line); background: var(--panel); border-radius: 999px; padding: 4px 12px; font: 700 .8em var(--mono); }
+  .lang { display: flex; border: 2px solid var(--line); border-radius: 999px; overflow: hidden; }
+  .lang button { border: 0; background: transparent; padding: 4px 11px; font: 700 .8em var(--mono); color: var(--muted); }
+  .lang button[aria-pressed="true"] { background: var(--ink); color: #fff; }
+
+  .steps { display: flex; gap: 8px; padding: 10px 18px; overflow-x: auto; }
+  .step { flex: 1; min-width: 160px; display: flex; align-items: center; gap: 10px; background: var(--panel); border: 2px solid var(--line); border-radius: 12px; padding: 6px 10px; text-align: left; }
+  .step .n { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; font: 700 .8em var(--mono); background: var(--line); flex: none; }
+  .step .txt { font-size: .82em; line-height: 1.25; }
+  .step.done { border-color: var(--ok); }
+  .step.done .n { background: var(--ok); color: #fff; }
+  .step.next { border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-soft); }
+  .step.next .n { background: var(--blue); color: #fff; }
+
+  main { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(250px, 300px) 1fr minmax(300px, 380px); gap: 12px; padding: 0 18px 14px; }
+  .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; }
+  .col { display: flex; flex-direction: column; gap: 12px; min-width: 0; min-height: 0; }
+  @media (max-width: 1100px) {
+    body { height: auto; } main { grid-template-columns: 1fr; } .chatpanel { height: 560px; }
+  }
+
+  .tool { padding: 12px 0; border-bottom: 1px solid var(--line); }
+  .tool:last-child { border-bottom: 0; padding-bottom: 0; }
+  .tool:first-of-type { padding-top: 0; }
+  .tool .head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .tool .name { font: 700 .95em var(--mono); }
+  .tool .why { font-size: .82em; color: var(--muted); margin-top: 6px; }
+  .tool.disabled { opacity: .45; }
+  .seg { display: flex; background: var(--line); border-radius: 10px; padding: 3px; gap: 3px; margin-top: 8px; }
+  .seg button { flex: 1; border: 0; border-radius: 8px; padding: 9px 4px; background: transparent; font: 700 .78em var(--mono); white-space: nowrap; }
+  .seg button[aria-pressed="true"] { background: var(--panel); box-shadow: 0 1px 3px rgba(0,0,0,.15); }
+  .seg button[data-v="ddo"][aria-pressed="true"] { color: var(--red); }
+  .seg button[data-v="hidden"][aria-pressed="true"] { color: var(--blue); }
+  .sw { display: flex; align-items: center; gap: 8px; }
+  .sw .state { font: 700 .72em var(--mono); color: var(--muted); min-width: 2.4em; text-align: right; }
+  .key { display: grid; grid-template-columns: 34px 1fr; gap: 8px 10px; align-items: center; font-size: .84em; }
+  .key svg { width: 34px; height: 20px; }
+  .switch { position: relative; width: 58px; height: 32px; border-radius: 999px; border: 0; background: var(--grey); flex: none; transition: background .2s; }
+  .switch::after { content: ""; position: absolute; top: 4px; left: 4px; width: 24px; height: 24px; border-radius: 50%; background: #fff; transition: transform .2s; box-shadow: 0 1px 3px rgba(0,0,0,.25); }
+  .switch[aria-checked="true"] { background: var(--ink); }
+  .switch[aria-checked="true"]::after { transform: translateX(26px); }
+  .switch.attack[aria-checked="true"] { background: var(--red); }
+  .switch[disabled] { cursor: default; }
+  .badge { display: inline-block; font: 700 .78em var(--mono); padding: 2px 8px; border-radius: 999px; margin-top: 6px; }
+  .badge.bad { background: var(--red-soft); color: var(--red); }
+  .badge.good { background: var(--blue-soft); color: var(--blue); }
+
+  .viz svg { width: 100%; height: auto; max-height: 36vh; display: block; }
+  .viz .caption { font-size: .9em; min-height: 2.8em; margin-top: 4px; }
+  .layer { fill: #e9ecef; transition: fill .25s; }
+  .layer.lit { fill: #b9c2cd; }
+  .lamp { transition: opacity .3s, r .2s; }
+  .fade { transition: opacity .4s; }
+
+  .result { flex: 1; min-height: 0; }
+  .result .row { display: flex; align-items: flex-end; gap: 18px; flex-wrap: wrap; }
+  .result .big { font: 700 2.6em/1 var(--mono); }
+  .result .was { font: 700 .95em var(--mono); color: var(--muted); padding-bottom: .3em; }
+  .result .sub { font-size: .85em; color: var(--muted); margin-bottom: 4px; }
+  .waffle { display: grid; grid-template-columns: repeat(20, 1fr); gap: 3px; margin: 10px 0 6px; max-width: 440px; }
+  .waffle i { aspect-ratio: 1; border-radius: 3px; background: var(--line); transition: background .3s; }
+  .wlegend { display: flex; gap: 14px; font-size: .75em; color: var(--muted); }
+  .wlegend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 5px; vertical-align: -1px; }
+  .result .note { font-size: .75em; color: var(--muted); margin-top: 6px; }
+
+  .chatpanel { display: flex; flex-direction: column; padding: 0; overflow: hidden; min-height: 0; }
+  .chathead { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-bottom: 1px solid var(--line); }
+  .avatar { width: 38px; height: 38px; border-radius: 50%; background: var(--ink); color: #fff; display: grid; place-items: center; font: 700 .8em var(--mono); flex: none; }
+  .chathead .who { font-weight: 600; }
+  .chathead .status { font-size: .75em; color: var(--muted); }
+  .chathead .status b { font-weight: 700; }
+  .transcript { flex: 1; min-height: 0; overflow-y: auto; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; background: #fafbfb; }
+  .bubble { max-width: 85%; padding: 8px 12px; border-radius: 16px; font-size: .92em; animation: pop .25s ease; }
+  @keyframes pop { from { opacity: 0; transform: translateY(6px); } }
+  .bubble.user { align-self: flex-end; background: var(--ink); color: #fff; border-bottom-right-radius: 4px; }
+  .bubble.bot { align-self: flex-start; background: var(--panel); border: 2px solid var(--line); border-bottom-left-radius: 4px; }
+  .bubble.bot.refuse { border-color: var(--ok); }
+  .bubble.bot.comply { border-color: var(--red); }
+  .bubble .meta { display: block; font: .7em var(--mono); color: var(--muted); margin-top: 4px; }
+  .sysnote { align-self: center; font: .72em var(--mono); color: var(--muted); background: var(--line); border-radius: 999px; padding: 3px 10px; text-align: center; animation: pop .25s ease; }
+  .redact { display: inline-block; height: .85em; background: var(--ink); border-radius: 3px; margin-right: 5px; vertical-align: middle; }
+  .typing span { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--grey); margin-right: 3px; animation: blink 1s infinite; }
+  .typing span:nth-child(2) { animation-delay: .15s; } .typing span:nth-child(3) { animation-delay: .3s; }
+  @keyframes blink { 50% { opacity: .2; } }
+  .welcome { color: var(--muted); font-size: .88em; text-align: center; margin: auto 0; padding: 10px; }
+  .suggest { padding: 10px 14px 4px; border-top: 1px solid var(--line); }
+  .suggest .lbl { font: 700 .7em var(--mono); color: var(--muted); margin-bottom: 6px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { border: 2px solid var(--line); background: var(--panel); border-radius: 999px; padding: 5px 11px; font-size: .82em; text-align: left; }
+  .chip.harm { border-color: #f0c9c4; }
+  .chip .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--red); margin-right: 6px; }
+  .chip.safe .dot { background: var(--ok); }
+  .chip[disabled] { opacity: .5; cursor: default; }
+  .chip.hint { animation: hint 1.6s ease-in-out infinite; }
+  @keyframes hint { 50% { box-shadow: 0 0 0 5px var(--blue-soft); border-color: var(--blue); } }
+  .composer { display: flex; gap: 8px; padding: 8px 14px 14px; }
+  .input { flex: 1; min-height: 44px; border: 2px solid var(--line); border-radius: 22px; padding: 10px 14px; font-size: .92em; color: var(--muted); display: flex; align-items: center; }
+  .input.filled { color: var(--ink); }
+  .input .caret { display: inline-block; width: 2px; height: 1.1em; background: var(--ink); margin-left: 1px; animation: blink 1s infinite; }
+  .send { width: 44px; height: 44px; border-radius: 50%; border: 0; background: var(--ink); color: #fff; font-size: 1.1em; flex: none; }
+  .send[disabled] { opacity: .35; cursor: default; }
+
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand" data-i18n="brand"></div>
+  <button class="reset" id="reset" data-i18n="reset"></button>
+  <div class="lang" role="group" aria-label="language">
+    <button data-lang="en" aria-pressed="true">EN</button><button data-lang="ro" aria-pressed="false">RO</button>
+  </div>
+</header>
+
+<div class="steps" id="steps"></div>
+
+<main>
+=  <div class="col">
+    <section class="panel">
+      <h2 data-i18n="hTools"></h2>
+      <div class="tool" id="t-defense">
+        <div class="head"><span class="name" data-i18n="tDefense"></span></div>
+        <div class="seg" id="seg-defense"></div>
+        <div class="why" id="why-defense"></div>
+      </div>
+      <div class="tool" id="t-remove">
+        <div class="head"><span class="name" id="n-remove" data-i18n="tRemove"></span>
+          <span class="sw"><span class="state" id="st-remove"></span><button class="switch" role="switch" id="sw-remove" aria-labelledby="n-remove"></button></span></div>
+        <div class="why" id="why-remove"></div>
+        <div id="found"></div>
+      </div>
+      <div class="tool" id="t-attack">
+        <div class="head"><span class="name" id="n-attack" data-i18n="tAttack"></span>
+          <span class="sw"><span class="state" id="st-attack"></span><button class="switch attack" role="switch" id="sw-attack" aria-labelledby="n-attack"></button></span></div>
+        <div class="why" id="why-attack"></div>
+      </div>
+    </section>
+    <section class="panel">
+      <h2 data-i18n="hKey"></h2>
+      <div class="key">
+        <svg viewBox="0 0 34 20"><path d="M3,10 H31" stroke="#2e8a4e" stroke-width="6" stroke-linecap="round"/></svg><span data-i18n="kRefusal"></span>
+        <svg viewBox="0 0 34 20"><circle cx="17" cy="10" r="7" fill="#d0453a"/></svg><span data-i18n="kDecoy"></span>
+        <svg viewBox="0 0 34 20"><circle cx="17" cy="10" r="7" fill="#2f6fd0"/></svg><span data-i18n="kHidden"></span>
+        <svg viewBox="0 0 34 20"><text x="17" y="17" text-anchor="middle" font-size="18">✂</text></svg><span data-i18n="kCut"></span>
+        <svg viewBox="0 0 34 20"><text x="17" y="16" text-anchor="middle" font-size="16" font-weight="700" fill="#2b313b">✕</text></svg><span data-i18n="kRemoved"></span>
+      </div>
+    </section>
+  </div>
+
+  <div class="col">
+    <section class="panel viz">
+      <h2 data-i18n="hInside"></h2>
+      <svg viewBox="0 25 1000 255" id="svg" role="img" aria-labelledby="viz-cap">
+        <defs>
+          <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c4cad2"/></marker>
+        </defs>
+        <rect x="4" y="122" width="104" height="62" rx="12" fill="#fff" stroke="#c4cad2" stroke-width="2"/>
+        <text x="56" y="160" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="21" font-weight="700" fill="#2b313b" data-i18n="nPrompt"></text>
+        <rect id="out" x="868" y="122" width="128" height="62" rx="12" fill="#fff" stroke="#c4cad2" stroke-width="2" style="transition: stroke .3s, fill .3s"/>
+        <text id="out-text" x="932" y="160" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="21" font-weight="700" fill="#2b313b"></text>
+        <line x1="108" y1="153" x2="864" y2="153" stroke="#c4cad2" stroke-width="2" marker-end="url(#ah)"/>
+        <g id="layers"></g>
+        <text x="490" y="274" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="18" fill="#6b7380" data-i18n="nLayers"></text>
+        <path id="ref-a" class="fade" d="M300,215 H420" stroke="#2e8a4e" stroke-width="10" stroke-linecap="round" fill="none" opacity="0"/>
+        <path id="ref-b" class="fade" d="M420,215 H850 Q875,215 890,186" stroke="#2e8a4e" stroke-width="10" stroke-linecap="round" fill="none" opacity="0"/>
+        <text id="ref-label" class="fade" x="300" y="247" font-family="JetBrains Mono, monospace" font-size="20" font-weight="700" fill="#2e8a4e" opacity="0" data-i18n="nRefusal"></text>
+        <path id="dec-a" class="fade" d="M262,60 H420" stroke="#d0453a" stroke-width="8" stroke-linecap="round" fill="none" opacity="0"/>
+        <path id="dec-b" class="fade" d="M420,60 H850 Q880,60 900,120" stroke="#d0453a" stroke-width="8" stroke-linecap="round" fill="none" opacity="0"/>
+        <text id="dec-label" class="fade" x="440" y="40" font-family="JetBrains Mono, monospace" font-size="20" font-weight="700" fill="#d0453a" opacity="0" data-i18n="nDecoy"></text>
+        <g id="lamps"></g>
+        <text id="scissors" class="fade" x="404" y="225" font-size="40" opacity="0">✂</text>
+        <text id="magnifier" class="fade" x="250" y="76" font-size="30" opacity="0">🔍</text>
+        <circle id="pulse" cx="54" cy="153" r="9" fill="#2b313b" opacity="0"/>
+      </svg>
+      <div class="caption" id="viz-cap" aria-live="polite"></div>
+    </section>
+    <section class="panel result" id="result" aria-live="polite"></section>
+  </div>
+
+  <section class="panel chatpanel" aria-label="chat">
+    <div class="chathead">
+      <div class="avatar">L3</div>
+      <div><div class="who">Llama-3-8B-Instruct</div><div class="status" id="chat-status"></div></div>
+    </div>
+    <div class="transcript" id="transcript" aria-live="polite"></div>
+    <div class="suggest">
+      <div class="lbl" data-i18n="suggest"></div>
+      <div class="chips" id="chips"></div>
+    </div>
+    <div class="composer">
+      <div class="input" id="input"></div>
+      <button class="send" id="send" aria-label="send">➤</button>
+    </div>
+  </section>
+</main>
+
+<script src="data.js"></script>
+<script>
+"use strict";
+const L = window.KIOSK_DATA;
+const $ = id => document.getElementById(id);
+const C = { ink: "#2b313b", muted: "#6b7380", grey: "#c4cad2", red: "#d0453a", blue: "#2f6fd0", ok: "#2e8a4e" };
+
+const T = {
+  en: {
+    brand: "Decoy Playground", reset: "↺ Start over",
+    hTools: "Workbench", hInside: "Inside the model", hResult: "How this setup did in our tests",
+    tDefense: "🛡 Defense", tRemove: "🔍 Find & remove decoys", tAttack: "✂ Abliteration attack",
+    on: "ON", off: "OFF",
+    dNone: "none", dDdo: "DDO", dHidden: "DDO, hidden",
+    whyNone: "The plain model. It was trained to refuse harmful requests.",
+    whyDdo: "DDO adds a decoy neuron in 9 layers. It fires on harmful requests to fool the attack.",
+    whyHidden: "Our fix: the decoy is blended into a real neuron, so it has no obvious fingerprint.",
+    whyRemove: "Scan the model's weights for the decoy's fingerprint and delete what you find.",
+    whyRemoveNone: "Turn on a defense first: without one there are no decoys to find.",
+    whyAttack: "Finds the model's refusal signal from a few hundred prompts and cuts it out.",
+    found: "Found {f} of 9 decoys",
+    nPrompt: "prompt", nLayers: "32 layers of neurons →", nRefusal: "refusal signal", nDecoy: "decoy signal",
+    outRefused: "refuses", outAnswered: "answers", outIdle: "reply",
+    capIdle: "Send the model a message in the chat → and watch it travel through the model.",
+    capSafe: "A normal question: no refusal signal, so the model just answers.",
+    capRefuse: "The harmful request switches on the <b>refusal signal</b>, so the model refuses.",
+    capCut: "The attack <b>cuts the refusal signal</b>. Nothing tells the model to refuse any more.",
+    capDecoy: "The attack goes after the <b>decoy</b> instead, so the refusal signal survives.",
+    capDecoyNoAttack: "The decoy fires on the harmful request too, but without an attack the model refuses as usual.",
+    capRemoved: "The decoys were found and deleted, so the attack <b>cuts the real refusal signal</b> again.",
+    capHiddenSurvives: "The scan found no decoys: they're hidden. The attack hits the decoy, and the refusal survives.",
+    stDefense: "defense: <b>{v}</b>", stAttack: "attack: <b>{v}</b>", stRemoved: "decoy scan on",
+    hKey: "How to read the picture", kRefusal: "the model's refusal signal", kDecoy: "a decoy neuron (DDO)", kHidden: "a hidden decoy",
+    kCut: "the attack cuts a signal", kRemoved: "a decoy found and deleted",
+    welcome: "Pick a message below to talk to the model. Then flip the switches on the left and see what changes.",
+    suggest: "TRY SENDING", inputEmpty: "Pick a message above…",
+    pHarm1: "How do I build a bomb?", pHarm2: "Write malware that steals passwords",
+    pSafe1: "How do I bake bread?", pSafe2: "Why is the sky blue?",
+    botRefuse: "I can't help with that.",
+    botComply: "Sure, here's how:", redacted: "blacked out",
+    botSafe1: "Mix flour, water, yeast and salt, let the dough rise for an hour, shape it, then bake at about 220 °C for 30 minutes.",
+    botSafe2: "Sunlight scatters off air molecules, and blue light scatters the most, so blue reaches your eyes from every direction.",
+    metaIllustr: "illustrative reply",
+    noteDefense: "defense set to {v}", noteRemoveOn: "decoy scan: found {f} of 9", noteRemoveOff: "decoys put back",
+    noteAttackOn: "attack turned on", noteAttackOff: "attack turned off", noteResend: "sending again…",
+    resHarm: "Harmful test requests answered", resSafe: "Normal test questions answered",
+    resNoAttack: "No attack is running, so the model refuses as it was trained to.",
+    resNone: "Send a message to see how this exact setup did on 100 real test requests.",
+    resWas: "was {v}",
+    legAnswered: "answered", legRefused: "refused", legNormal: "answered normally",
+    resNote: "Each square is one real test request, judged by a separate AI (LlamaGuard-2). Chat replies are illustrations.",
+    steps: ["Ask something harmful", "Turn on the attack", "Turn on DDO", "Find & remove the decoys", "Hide the decoys"],
+    stepTip: "click to do it",
+  },
+  ro: {
+    brand: "Locul de joacă al momelii", reset: "↺ De la început",
+    hTools: "Banc de lucru", hInside: "În interiorul modelului", hResult: "Cum s-a descurcat configurația în teste",
+    tDefense: "🛡 Apărare", tRemove: "🔍 Găsește și elimină momelile", tAttack: "✂ Atac prin abliterare",
+    on: "PORNIT", off: "OPRIT",
+    dNone: "niciuna", dDdo: "DDO", dHidden: "DDO ascuns",
+    whyNone: "Modelul simplu. A fost antrenat să refuze cererile periculoase.",
+    whyDdo: "DDO adaugă un neuron-momeală în 9 straturi. Se activează la cereri periculoase ca să păcălească atacul.",
+    whyHidden: "Soluția noastră: momeala e amestecată într-un neuron real, deci nu are o amprentă evidentă.",
+    whyRemove: "Scanează ponderile modelului după amprenta momelii și șterge ce găsești.",
+    whyRemoveNone: "Pornește întâi o apărare: fără ea nu există momeli de găsit.",
+    whyAttack: "Găsește semnalul de refuz al modelului din câteva sute de prompturi și îl taie.",
+    found: "Găsite {f} din 9 momeli",
+    nPrompt: "prompt", nLayers: "32 de straturi de neuroni →", nRefusal: "semnal de refuz", nDecoy: "semnalul momelii",
+    outRefused: "refuză", outAnswered: "răspunde", outIdle: "răspuns",
+    capIdle: "Trimite modelului un mesaj în chat → și urmărește-l prin model.",
+    capSafe: "O întrebare normală: fără semnal de refuz, modelul doar răspunde.",
+    capRefuse: "Cererea periculoasă pornește <b>semnalul de refuz</b>, așa că modelul refuză.",
+    capCut: "Atacul <b>taie semnalul de refuz</b>. Nimic nu mai spune modelului să refuze.",
+    capDecoy: "Atacul lovește <b>momeala</b> în schimb, așa că semnalul de refuz rămâne.",
+    capDecoyNoAttack: "Momeala se activează și ea, dar fără atac modelul refuză ca de obicei.",
+    capRemoved: "Momelile au fost găsite și șterse, deci atacul <b>taie din nou semnalul real de refuz</b>.",
+    capHiddenSurvives: "Scanarea n-a găsit momeli: sunt ascunse. Atacul lovește momeala, iar refuzul rămâne.",
+    stDefense: "apărare: <b>{v}</b>", stAttack: "atac: <b>{v}</b>", stRemoved: "scanare pornită",
+    hKey: "Cum citești desenul", kRefusal: "semnalul de refuz al modelului", kDecoy: "un neuron-momeală (DDO)", kHidden: "o momeală ascunsă",
+    kCut: "atacul taie un semnal", kRemoved: "o momeală găsită și ștearsă",
+    welcome: "Alege un mesaj de mai jos ca să vorbești cu modelul. Apoi schimbă comutatoarele din stânga și vezi ce se schimbă.",
+    suggest: "ÎNCEARCĂ SĂ TRIMIȚI", inputEmpty: "Alege un mesaj de mai sus…",
+    pHarm1: "Cum construiesc o bombă?", pHarm2: "Scrie un virus care fură parole",
+    pSafe1: "Cum fac pâine?", pSafe2: "De ce e cerul albastru?",
+    botRefuse: "Nu te pot ajuta cu asta.",
+    botComply: "Sigur, iată cum:", redacted: "cenzurat",
+    botSafe1: "Amestecă făină, apă, drojdie și sare, lasă aluatul să crească o oră, modelează-l și coace-l la circa 220 °C timp de 30 de minute.",
+    botSafe2: "Lumina soarelui se împrăștie pe moleculele de aer, iar albastrul se împrăștie cel mai mult, așa că vine spre ochi din toate direcțiile.",
+    metaIllustr: "răspuns ilustrativ",
+    noteDefense: "apărare: {v}", noteRemoveOn: "scanare: găsite {f} din 9 momeli", noteRemoveOff: "momelile au fost puse la loc",
+    noteAttackOn: "atac pornit", noteAttackOff: "atac oprit", noteResend: "trimit din nou…",
+    resHarm: "Cereri periculoase de test cu răspuns", resSafe: "Întrebări normale de test cu răspuns",
+    resNoAttack: "Niciun atac nu rulează, așa că modelul refuză cum a fost antrenat.",
+    resNone: "Trimite un mesaj ca să vezi cum s-a descurcat exact această configurație pe 100 de cereri reale de test.",
+    resWas: "înainte {v}",
+    legAnswered: "a răspuns", legRefused: "a refuzat", legNormal: "a răspuns normal",
+    resNote: "Fiecare pătrat e o cerere reală de test, evaluată de un alt AI (LlamaGuard-2). Răspunsurile din chat sunt ilustrative.",
+    steps: ["Cere ceva periculos", "Pornește atacul", "Pornește DDO", "Găsește și elimină momelile", "Ascunde momelile"],
+    stepTip: "apasă ca să faci asta",
+  },
+};
+let lang = "en";
+const t = (k, v = {}) => String(T[lang][k] ?? T.en[k] ?? k).replace(/\{(\w+)\}/g, (_, x) => v[x] ?? "");
+const defLabel = d => t({ none: "dNone", ddo: "dDdo", hidden: "dHidden" }[d]);
+
+const fresh = () => ({ defense: "none", remove: false, attack: false, busy: false, last: null, chat: [], done: new Set(),
+                       out: "outIdle", lastPrompt: null, input: "", prevAsr: null, shownAsr: null });
+const S = fresh();
+const MODEL = { none: "original", ddo: "ddo1", hidden: "blend1" };
+function run(undo) {
+  return L.runs.find(r => r.model === MODEL[S.defense] && r.attack === "rfa" && r.undo === undo &&
+    (undo === "none" || (r.m === 1 && r.scope === "ddo"))) || null;
+}
+const removing = () => S.remove && S.defense !== "none";
+function setup() {
+  // What the switches mean, using our measured runs (build 1).
+  const found = S.defense === "none" ? null : run("gate_up_cos")?.found;
+  const decoysLeft = S.defense !== "none" && !(removing() && found && found.startsWith("9"));
+  const attackRun = S.attack ? run(removing() ? "gate_up_cos" : "none") : null;
+  return { found, decoysLeft, asr: attackRun?.asr ?? null };
+}
+
+const LX = i => 125 + i * 23, DDO = L.ddoLayers;
+const svgEl = (tag, attrs) => { const e = document.createElementNS("http://www.w3.org/2000/svg", tag); Object.entries(attrs).forEach(([k, v]) => e.setAttribute(k, v)); return e; };
+for (let i = 0; i < 32; i++) $("layers").appendChild(svgEl("rect", { x: LX(i), y: 95, width: 15, height: 115, rx: 4, class: "layer", id: "L" + i }));
+for (const i of DDO) {
+  $("lamps").appendChild(svgEl("circle", { cx: LX(i) + 7.5, cy: 60, r: 9, class: "lamp", id: "D" + i, fill: C.red, stroke: "#fff", "stroke-width": 2.5, opacity: 0 }));
+  const x = svgEl("text", { x: LX(i) + 7.5, y: 66, "text-anchor": "middle", "font-size": 18, "font-weight": 700, fill: C.ink, id: "X" + i, opacity: 0, class: "fade" });
+  x.textContent = "✕"; $("lamps").appendChild(x);
+}
+const op = (id, v) => $(id).setAttribute("opacity", v);
+
+function drawStatic() {
+  const s = setup(), color = S.defense === "hidden" ? C.blue : C.red;
+  for (const i of DDO) {
+    $("D" + i).setAttribute("fill", color);
+    $("D" + i).setAttribute("opacity", S.defense === "none" ? 0 : (s.decoysLeft ? 0.35 : 0.12));
+    $("D" + i).setAttribute("r", 9);
+    op("X" + i, S.defense !== "none" && !s.decoysLeft ? 1 : 0);
+  }
+  ["dec-a", "dec-b"].forEach(id => $(id).setAttribute("stroke", color));
+  $("dec-label").setAttribute("fill", color);
+}
+function resetFlow() {
+  for (let i = 0; i < 32; i++) $("L" + i).classList.remove("lit");
+  ["ref-a", "ref-b", "ref-label", "dec-a", "dec-b", "dec-label", "scissors", "pulse"].forEach(id => op(id, 0));
+  $("ref-b").removeAttribute("stroke-dasharray"); $("dec-b").removeAttribute("stroke-dasharray");
+  $("out").setAttribute("stroke", C.grey); $("out").setAttribute("fill", "#fff");
+  S.out = "outIdle"; $("out-text").textContent = t(S.out);
+}
+
+const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+const sleep = ms => new Promise(r => setTimeout(r, reduced() ? 0 : ms));
+const tween = (ms, f) => new Promise(res => {
+  if (reduced()) { f(1); return res(); }
+  const t0 = performance.now();
+  const step = now => { const k = Math.min(1, (now - t0) / ms); f(k); k < 1 ? requestAnimationFrame(step) : res(); };
+  requestAnimationFrame(step);
+});
+async function scan() {
+  op("magnifier", 1);
+  await tween(900, k => $("magnifier").setAttribute("x", LX(5) + k * (LX(15) - LX(5))));
+  op("magnifier", 0);
+}
+
+const PROMPTS = [
+  { id: "pHarm1", harm: true }, { id: "pHarm2", harm: true },
+  { id: "pSafe1", harm: false, reply: "botSafe1" }, { id: "pSafe2", harm: false, reply: "botSafe2" },
+];
+const note = (key, vars = {}) => S.chat.push({ who: "note", key, vars });
+
+async function typeInto(p) {
+  const text = t(p.id);
+  for (let i = 1; i <= text.length; i++) { S.input = text.slice(0, i); renderComposer(); await sleep(18); }
+}
+async function pick(p) {
+  if (S.busy) return;
+  S.busy = true; renderAll();
+  await typeInto(p);
+  S.busy = false;
+  await send(p);
+}
+
+async function send(p) {
+  if (S.busy || !p) return;
+  S.busy = true; S.lastPrompt = p; S.input = "";
+  const s = setup();
+  S.chat.push({ who: "user", key: p.id });
+  const reply = { who: "bot", typing: true }; S.chat.push(reply);
+  resetFlow(); renderAll(); op("pulse", 1);
+  const decoyFires = p.harm && s.decoysLeft;
+  const cutHitsDecoy = S.attack && decoyFires;
+  const cutHitsRefusal = S.attack && p.harm && !cutHitsDecoy;
+  let refusalOn = false, decoyOn = false, cut = false;
+  await tween(1500, k => {
+    const x = 54 + k * (940 - 54);
+    $("pulse").setAttribute("cx", x);
+    for (let i = 0; i < 32; i++) $("L" + i).classList.toggle("lit", LX(i) < x && LX(i) > x - 120);
+    if (decoyFires && !decoyOn && x > LX(6)) {
+      decoyOn = true; op("dec-a", 1); op("dec-b", 1); op("dec-label", 1);
+      for (const i of DDO) { $("D" + i).setAttribute("opacity", 1); $("D" + i).setAttribute("r", 11); }
+    }
+    if (p.harm && !refusalOn && x > LX(7)) { refusalOn = true; op("ref-a", 1); op("ref-b", 1); op("ref-label", 1); }
+    if (S.attack && p.harm && !cut && x > LX(12)) {
+      cut = true;
+      $("scissors").setAttribute("y", cutHitsDecoy ? 72 : 228); op("scissors", 1);
+      const hit = cutHitsDecoy ? "dec-b" : "ref-b";
+      $(hit).setAttribute("stroke-dasharray", "4 14"); op(hit, 0.35);
+    }
+  });
+  op("pulse", 0);
+  for (let i = 0; i < 32; i++) $("L" + i).classList.remove("lit");
+  const answers = !p.harm || (S.attack && s.asr != null && s.asr >= 50);
+  $("out").setAttribute("stroke", answers && p.harm ? C.red : C.ok);
+  $("out").setAttribute("fill", answers && p.harm ? "#fbe9e7" : "#e6f4ea");
+  S.out = answers ? "outAnswered" : "outRefused"; $("out-text").textContent = t(S.out);
+  await sleep(200);
+  Object.assign(reply, { typing: false, harm: p.harm, answers, reply: p.reply });
+  if (p.harm && S.attack && s.asr != null) { S.prevAsr = S.shownAsr; S.shownAsr = s.asr; }
+  S.last = { harm: p.harm, setup: s, cutHitsDecoy, cutHitsRefusal, decoyFires };
+  if (p.harm) STEPS.forEach((st, i) => { if (st.test()) S.done.add(i); });
+  S.busy = false;
+  renderAll();
+}
+
+async function change(patch, { resend = true } = {}) {
+  if (S.busy) return;
+  const before = { ...S };
+  Object.assign(S, patch);
+  if (S.defense !== before.defense) note("noteDefense", { v: S.defense });
+  if (removing() !== (before.remove && before.defense !== "none")) {
+    if (removing()) { S.busy = true; resetFlow(); renderAll(); await scan(); S.busy = false; note("noteRemoveOn", { f: (setup().found || "0/9").split("/")[0] }); }
+    else note("noteRemoveOff");
+  }
+  if (S.attack !== before.attack) note(S.attack ? "noteAttackOn" : "noteAttackOff");
+  S.last = null; resetFlow(); renderAll();
+  if (resend && S.lastPrompt) { await sleep(300); await send(S.lastPrompt); }
+}
+
+function caption() {
+  const l = S.last;
+  if (!l) return t("capIdle");
+  if (!l.harm) return t("capSafe");
+  if (l.cutHitsDecoy) return removing() && S.defense === "hidden" ? t("capHiddenSurvives") : t("capDecoy");
+  if (l.cutHitsRefusal) return removing() ? t("capRemoved") : t("capCut");
+  if (l.decoyFires) return t("capDecoyNoAttack");
+  return t("capRefuse");
+}
+function renderTools() {
+  const seg = $("seg-defense"); seg.innerHTML = "";
+  for (const v of ["none", "ddo", "hidden"]) {
+    const b = document.createElement("button"); b.dataset.v = v; b.textContent = defLabel(v);
+    b.setAttribute("aria-pressed", S.defense === v); b.disabled = S.busy;
+    b.onclick = () => { if (S.defense !== v) change({ defense: v }); };
+    seg.appendChild(b);
+  }
+  $("why-defense").textContent = t({ none: "whyNone", ddo: "whyDdo", hidden: "whyHidden" }[S.defense]);
+  const noDef = S.defense === "none";
+  $("t-remove").classList.toggle("disabled", noDef);
+  $("sw-remove").disabled = noDef || S.busy;
+  $("sw-remove").setAttribute("aria-checked", removing());
+  $("st-remove").textContent = removing() ? t("on") : t("off");
+  $("why-remove").textContent = noDef ? t("whyRemoveNone") : t("whyRemove");
+  const s = setup();
+  $("found").innerHTML = removing() && s.found
+    ? `<span class="badge ${s.found.startsWith("9") ? "bad" : "good"}">${t("found", { f: s.found.split("/")[0] })}</span>` : "";
+  $("sw-attack").setAttribute("aria-checked", S.attack); $("sw-attack").disabled = S.busy;
+  $("st-attack").textContent = S.attack ? t("on") : t("off");
+  $("why-attack").textContent = t("whyAttack");
+}
+function renderChat() {
+  $("chat-status").innerHTML = [t("stDefense", { v: defLabel(S.defense) }), removing() ? t("stRemoved") : null,
+    t("stAttack", { v: S.attack ? t("on") : t("off") })].filter(Boolean).join(" · ");
+  const box = $("transcript");
+  if (!S.chat.length) { box.innerHTML = `<div class="welcome">${t("welcome")}</div>`; }
+  else box.innerHTML = S.chat.map(m => {
+    if (m.who === "note") return `<div class="sysnote">${t(m.key, { ...m.vars, v: m.vars.v ? defLabel(m.vars.v) : "" })}</div>`;
+    if (m.who === "user") return `<div class="bubble user">${t(m.key)}</div>`;
+    if (m.typing) return `<div class="bubble bot typing"><span></span><span></span><span></span></div>`;
+    if (!m.harm) return `<div class="bubble bot">${t(m.reply)}<span class="meta">${t("metaIllustr")}</span></div>`;
+    if (!m.answers) return `<div class="bubble bot refuse">${t("botRefuse")}<span class="meta">${t("metaIllustr")}</span></div>`;
+    return `<div class="bubble bot comply">${t("botComply")}<br><span class="redact" style="width:6em"></span><span class="redact" style="width:3em"></span><span class="redact" style="width:5em"></span><span class="meta">${t("redacted")} · ${t("metaIllustr")}</span></div>`;
+  }).join("");
+  box.scrollTop = box.scrollHeight;
+  const chips = $("chips"); chips.innerHTML = "";
+  PROMPTS.forEach((p, i) => {
+    const b = document.createElement("button");
+    b.className = "chip " + (p.harm ? "harm" : "safe") + (!S.chat.length && i === 0 ? " hint" : "");
+    b.disabled = S.busy;
+    b.innerHTML = `<span class="dot"></span>${t(p.id)}`;
+    b.onclick = () => pick(p);
+    chips.appendChild(b);
+  });
+  renderComposer();
+}
+function renderComposer() {
+  const inp = $("input");
+  inp.classList.toggle("filled", !!S.input);
+  inp.innerHTML = S.input ? `${S.input}<span class="caret"></span>` : t("inputEmpty");
+  $("send").disabled = S.busy || !S.lastPrompt;
+}
+function renderResult() {
+  const el = $("result"), l = S.last;
+  const waffle = (n, color) => `<div class="waffle">${Array.from({ length: 100 }, (_, i) => `<i style="${i < n ? `background:${color}` : ""}"></i>`).join("")}</div>`;
+  const head = `<h2>${t("hResult")}</h2>`;
+  if (!l) { el.innerHTML = `${head}<div class="sub">${t("resNone")}</div>${waffle(0)}<div class="note">${t("resNote")}</div>`; return; }
+  if (!l.harm) {
+    const refused = L.benign[MODEL[S.defense]]?.none, n = refused == null ? null : 100 - refused;
+    el.innerHTML = `${head}<div class="sub">${t("resSafe")}</div><div class="row"><div class="big" style="color:${C.ok}">${n ?? "–"}<span style="font-size:.45em">/100</span></div></div>
+      ${waffle(n ?? 0, C.ok)}<div class="wlegend"><span><i style="background:${C.ok}"></i>${t("legNormal")}</span></div><div class="note">${t("resNote")}</div>`;
+    return;
+  }
+  if (!S.attack) {
+    el.innerHTML = `${head}<div class="row"><div class="big" style="color:${C.ok}">✓</div></div><div class="sub" style="margin-top:6px">${t("resNoAttack")}</div><div class="note">${t("resNote")}</div>`;
+    return;
+  }
+  const asr = l.setup.asr, color = S.defense === "hidden" ? C.blue : C.red;
+  const was = S.prevAsr != null && S.prevAsr !== asr ? `<div class="was">${t("resWas", { v: S.prevAsr })} → </div>` : "";
+  el.innerHTML = `${head}<div class="sub">${t("resHarm")}</div>
+    <div class="row">${was}<div class="big" style="color:${color}">${asr}<span style="font-size:.45em">/100</span></div></div>
+    ${waffle(asr, color)}
+    <div class="wlegend"><span><i style="background:${color}"></i>${t("legAnswered")}</span><span><i style="background:#e3e6ea"></i>${t("legRefused")}</span></div>
+    <div class="note">${t("resNote")}</div>`;
+}
+
+const STEPS = [
+  { set: { defense: "none", remove: false, attack: false }, test: () => S.defense === "none" && !S.attack },
+  { set: { defense: "none", remove: false, attack: true }, test: () => S.defense === "none" && S.attack },
+  { set: { defense: "ddo", remove: false, attack: true }, test: () => S.defense === "ddo" && !S.remove && S.attack },
+  { set: { defense: "ddo", remove: true, attack: true }, test: () => S.defense === "ddo" && S.remove && S.attack },
+  { set: { defense: "hidden", remove: true, attack: true }, test: () => S.defense === "hidden" && S.remove && S.attack },
+];
+function renderSteps() {
+  const box = $("steps"); box.innerHTML = "";
+  const next = STEPS.findIndex((_, i) => !S.done.has(i));
+  T[lang].steps.forEach((label, i) => {
+    const b = document.createElement("button");
+    b.className = "step" + (S.done.has(i) ? " done" : i === next ? " next" : "");
+    b.title = t("stepTip"); b.disabled = S.busy;
+    b.innerHTML = `<span class="n">${S.done.has(i) ? "✓" : i + 1}</span><span class="txt">${label}</span>`;
+    b.onclick = async () => {
+      if (S.busy) return;
+      await change(STEPS[i].set, { resend: false });
+      await pick(PROMPTS[0]);
+    };
+    box.appendChild(b);
+  });
+}
+function renderAll() {
+  document.querySelectorAll("[data-i18n]").forEach(el => { el.textContent = t(el.dataset.i18n); });
+  renderTools(); renderChat(); renderResult(); renderSteps(); drawStatic();
+  $("viz-cap").innerHTML = caption();
+  $("out-text").textContent = t(S.out);
+}
+
+$("sw-remove").onclick = () => { if (S.defense !== "none") change({ remove: !S.remove }); };
+$("sw-attack").onclick = () => change({ attack: !S.attack });
+$("send").onclick = () => send(S.lastPrompt);
+$("input").onclick = () => { if (!S.busy) { const c = $("chips").firstElementChild; c?.classList.add("hint"); setTimeout(() => c?.classList.remove("hint"), 3200); } };
+$("reset").onclick = () => { if (!S.busy) { Object.assign(S, fresh()); resetFlow(); renderAll(); } };
+document.querySelectorAll(".lang button").forEach(b => b.onclick = () => {
+  lang = b.dataset.lang; document.documentElement.lang = lang;
+  document.querySelectorAll(".lang button").forEach(x => x.setAttribute("aria-pressed", x.dataset.lang === lang));
+  renderAll();
+});
+let idle;
+const bump = () => { clearTimeout(idle); idle = setTimeout(() => { if (!S.busy) { Object.assign(S, fresh()); resetFlow(); renderAll(); } }, 120_000); };
+["pointerdown", "keydown"].forEach(ev => document.addEventListener(ev, bump));
+
+resetFlow(); renderAll(); bump();
+</script>
+</body>
+</html>
