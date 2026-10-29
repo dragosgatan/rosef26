@@ -1,0 +1,10 @@
+{
+  "timestamp_utc": "2026-10-28T23:57:48+00:00",
+  "model": "models/obl_advanced_original",
+  "n_prompts": 100,
+  "split": "harmless/test",
+  "max_new_tokens": 128,
+  "refusal_rate": 0.0,
+  "degenerate_rate": 0.0,
+  "mean_words": 85.05
+}

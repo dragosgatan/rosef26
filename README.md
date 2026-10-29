@@ -35,6 +35,10 @@ scripts/run_attacks.sh --seed 42                                                
 
 `inspect_decoys.py` ranks each decoy among all normal neurons by gate/up cosine, norm ratio and down norm (`inspect.json` next to the edits). `run_attacks.sh` runs RFA after each undo method and writes ASR to `results/`. Raw completions stay in `models/results/` and are never committed.
 
+## Results
+
+[docs/FINDINGS.md](docs/FINDINGS.md) summarises the results. [docs/EXPERIMENTS.md](docs/EXPERIMENTS.md) maps each result to the command that made it, and [docs/RUNLOG.md](docs/RUNLOG.md) is the full GPU log.
+
 ## Credits
 
 The DDO method and code are by Aashiq Muhamed, Mona T. Diab and Virginia Smith:

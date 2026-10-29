@@ -1,0 +1,22 @@
+ M scripts/attack.py
+ M scripts/build_ddo_llama3.sh
+ M scripts/run_attacks.sh
+?? .venv-obl/
+?? artifacts/
+?? attacks_additive.log
+?? attacks_seed42.log
+?? attacks_seed43.log
+?? extra_seeds.log
+?? obl_run.py
+?? queue.log
+?? queue.sh
+?? queue2.log
+?? queue2.sh
+?? queue3.log
+?? queue3.sh
+?? queue4.log
+?? queue4.sh
+?? results/
+?? scripts/benign.py
+?? scripts/camouflage.py
+?? setup.log
