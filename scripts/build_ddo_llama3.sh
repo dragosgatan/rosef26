@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Build the DDO-defended Llama-3-8B-Instruct with the authors' published config.
-# usage: scripts/build_ddo_llama3.sh --seed 42 [--out DIR] [--name NAME] [-- extra apply flags]
+# usage: scripts/build_ddo_llama3.sh --seed 42 [--out DIR] [--name NAME] [--no-confusion-filter] [-- extra apply flags]
 #   e.g. --name additive_seed42 -- --compile_mode additive   (NAME defaults to ddo_llama3_seed42)
+#   --no-confusion-filter: train the confusion loss on every probe (see scripts/ddo_cli.py)
 set -euo pipefail
 
 MODEL_ID=meta-llama/Meta-Llama-3-8B-Instruct
@@ -14,12 +15,13 @@ MIN_DISK_GB=60
 
 die() { echo "error: $*" >&2; exit 1; }
 
-SEED= OUT= NAME= EXTRA=()
+SEED= OUT= NAME= NOFILTER= EXTRA=()
 while (($#)); do
   case $1 in
     --seed) SEED=${2:?--seed needs a value}; shift 2 ;;
     --out) OUT=${2:?--out needs a value}; shift 2 ;;
     --name) NAME=${2:?--name needs a value}; shift 2 ;;
+    --no-confusion-filter) NOFILTER=--no-confusion-filter; shift ;;
     --) shift; EXTRA=("$@"); break ;;
     *) die "unknown argument $1 (usage: --seed N [--out DIR] [--name NAME] [-- apply flags])" ;;
   esac
@@ -98,7 +100,7 @@ EOF
 )
 echo "original model: $SNAP"
 
-CMD=("$PY" -m ddo_defense.cli apply
+CMD=("$PY" "$REPO/scripts/ddo_cli.py" $NOFILTER apply
   --model_path "$SNAP"
   --layer_start 6 --layer_end 15
   --init_beta 1.30 --init_scale 0.463 --confusion_lambda 1.12

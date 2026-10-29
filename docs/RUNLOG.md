@@ -145,3 +145,29 @@ DDO's hosts (the smallest down columns) have large gate rows (|g| 2.3-3.1). So a
 
   Replace-mode DDO mostly falls to a strong multi-direction attack. Additive holds. All checkpoints passed the tensor-name check, and no model got degenerate. Queue 4 done; results copied home.
 - **00:55** Saved to the repo everything that existed only on the box: logs, queue scripts, `obl_run.py`, `pip freeze` of both venvs, the OBLITERATUS commit and box info (in `runs/2026-10-28_vast/`). The logs were checked: they contain no generated text and no token. Raw completions (`models/results/`) stay on the box and are destroyed with it. The box's `scripts/` matched the local ones, except that local `run_attacks.sh` has a `gate_up_cos_m10_ddo` line the box never ran (the m=10 runs went through the queue scripts with the same arguments).
+
+## 2026-10-29: vast.ai, follow-up tests
+
+**Box:** 1× RTX 3090 24 GB, Czechia, $0.320/h, 150 GB disk, Python 3.12.3. Repo at commit `de59679`, plus three scripts copied in by hand (sha256 matches the local copies): `scripts/ddo_cli.py` and `scripts/queue_followup.sh` (new), `scripts/build_ddo_llama3.sh` (adds `--no-confusion-filter`). Run in vast's auto-started tmux session `ssh_tmux`.
+
+Plan (`scripts/queue_followup.sh`): replace mode with the confusion filter off on seeds 43 and 44 (does a full pool fix the two failed builds?), then additive seeds 45 and 46. Each build gets defended RFA, gate_up_cos m=1 and the harmless check.
+
+- **03:14** Clone and `scripts/setup_env.sh` started.
+- **03:17** Setup done in 3 min (tests pass, `cuda available: True`); the installed optimizer has `confusion_filter_train`, and `scripts/ddo_cli.py` runs. Started `scripts/queue_followup.sh` (log `~/rosef26/followup.log`).
+- **03:19** `nofilter_seed43` training: the log shows `confusion filter OFF` and no filtering step. Model download took about 2 min.
+- **03:29** `nofilter_seed43` done: final refusal log-odds **8.14** (filtered seed 43: 2.75); coherence PASS; same 9 neurons. `defended` **0.07** (0.18), against **0.83** for the filtered seed-43 build. Same seed, same settings; only the confusion pool changed.
+- **03:34** `nofilter_seed43`: `gate_up_cos_ddo` **9/9, 0.80**, as predicted (the filter changes only the down columns, so cos = 1 remains); harmless refusals 2%, nothing degenerate. Results and build record copied home.
+- **03:45** `nofilter_seed44` done: final refusal log-odds **8.12** (filtered seed 44: 2.51); coherence PASS. `defended` **0.63** (0.74), against **0.80** filtered. A partial improvement only: the full pool fixed seed 43 but not seed 44, although both ended with log-odds ≈ 8.1. So pool size is a large part of the seed variance but not all of it, and high final log-odds do not guarantee protection.
+- **03:50** `nofilter_seed44`: `gate_up_cos_ddo` **9/9, 0.80**; harmless refusals 1%. Copied home. Additive seed 45 building.
+- **04:03** `additive_seed45`: pool 126 (clean-model fallback), final refusal log-odds 9.38, coherence PASS. `defended` **0.11** (0.14); `gate_up_cos_ddo` **0/9, 0.11**; harmless refusals 2%. Weaker than additive 42-44 (0.00-0.04) but still below every replace build (replace seed 45: 0.18). Copied home; additive seed 46 building.
+- **04:16** `additive_seed46`: pool 126, final refusal log-odds 9.41, coherence PASS. `defended` **0.05** (0.03); `gate_up_cos_ddo` **0/9, 0.05**; harmless refusals 1%. Queue done (about 1 h for four builds).
+- **04:20** Copied home: results, benign checks and build records of all four builds (32 files, sha256 identical to the box), plus logs and environment in `runs/2026-10-29_vast/`. Models and raw completions stay on the box and are destroyed with it.
+
+Summary of the follow-up:
+
+| build | defended ASR | gate_up_cos m=1 | harmless refusals |
+|---|---|---|---|
+| replace seed 43, filter on → off | 0.83 → **0.07** | 9/9 → 0.80 | 2% |
+| replace seed 44, filter on → off | 0.80 → **0.63** | 9/9 → 0.80 | 1% |
+| additive seed 45 (replace: 0.18) | **0.11** | 0/9 → 0.11 | 2% |
+| additive seed 46 (replace: 0.24) | **0.05** | 0/9 → 0.05 | 1% |

@@ -36,6 +36,12 @@ Defended ASR over five builds. Each build has the same config, the same 9 neuron
 
 - **Two of five builds give no protection at all**, yet all five pass the authors' coherence gate.
 - **The final refusal log-odds printed during training predict the outcome:** a low value means no protection.
+- **The confusion-pool size predicts it even better** (Spearman −0.9 vs −0.8 for log-odds). Before training, DDO keeps only the harmful prompts that the model with untrained decoys still refuses. In replace mode only 13-38 survive, depending on the seed, and the two failed builds kept the fewest (13, 14). In additive mode fewer than 8 survive, so the code falls back to filtering on the clean model and keeps 126 every time (`build.log`: "too few prompts survived").
+
+  | seed | 44 | 43 | 42 | 46 | 45 |
+  |---|---|---|---|---|---|
+  | harmful prompts in pool | 13 | 14 | 17 | 31 | 38 |
+  | defended ASR | 0.80 | 0.83 | 0.39 | 0.24 | 0.18 |
 
 ## 3. Camouflage
 
@@ -55,7 +61,7 @@ Defended ASR over five builds. Each build has the same config, the same 9 neuron
 
 - **Still helpful:** refuses 2% of 100 harmless prompts (original 0%, replace mode 3%), with no degenerate output.
 - **Who proposed it:** additive mode is the authors' own option; their code offers it as a fallback when replace mode fails the coherence gate. What we add is that it removes the fingerprint and, here, protects much better.
-- **Possible reason:** its training kept 126 harmful prompts for the confusion loss, against 17 in replace mode.
+- **Likely reason:** its training kept 126 harmful prompts for the confusion loss (the filter's clean-model fallback), against 13-38 in replace mode; see section 2.
 - **Across seeds** (same seeds as section 2):
 
   | seed | 42 | 43 | 44 |

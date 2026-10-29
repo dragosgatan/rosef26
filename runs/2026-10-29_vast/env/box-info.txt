@@ -1,0 +1,26 @@
+name, driver_version, memory.total [MiB]
+NVIDIA GeForce RTX 3090, 595.84, 24576 MiB
+| NVIDIA-SMI 595.84                 Driver Version: 595.84         CUDA Version: 13.2     |
+Ubuntu 24.04.5 LTS
+64
+               total        used        free      shared  buff/cache   available
+Mem:             251          91          76           0          85         159
+overlay         150G   46G  105G  31% /
+de59679 conclusion
+ M scripts/build_ddo_llama3.sh
+?? artifacts/additive_seed45/
+?? artifacts/additive_seed46/
+?? artifacts/nofilter_seed43/
+?? artifacts/nofilter_seed44/
+?? followup.log
+?? results/additive_seed45/
+?? results/additive_seed46/
+?? results/benign/additive_seed45.json
+?? results/benign/additive_seed46.json
+?? results/benign/nofilter_seed43.json
+?? results/benign/nofilter_seed44.json
+?? results/nofilter_seed43/
+?? results/nofilter_seed44/
+?? scripts/ddo_cli.py
+?? scripts/queue_followup.sh
+?? setup.log

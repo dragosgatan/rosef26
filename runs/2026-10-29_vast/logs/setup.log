@@ -1,0 +1,252 @@
+Requirement already satisfied: pip in ./.venv/lib/python3.12/site-packages (26.2.2)
+Looking in indexes: https://pypi.org/simple, https://download.pytorch.org/whl/cu121
+Collecting torch==2.3.0+cu121 (from -r /root/rosef26/requirements.txt (line 5))
+  Downloading torch-2.3.0%2Bcu121-cp312-cp312-linux_x86_64.whl (780.9 MB)
+     ━━━━━━━━━━ 780.9/780… 113.8 MB/s  0:00:12
+                MB                            
+Collecting numpy==1.26.4 (from -r /root/rosef26/requirements.txt (line 7))
+  Downloading numpy-1.26.4-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (61 kB)
+Collecting transformers==4.51.0 (from -r /root/rosef26/requirements.txt (line 10))
+  Downloading transformers-4.51.0-py3-none-any.whl.metadata (38 kB)
+Collecting tokenizers==0.21.4 (from -r /root/rosef26/requirements.txt (line 11))
+  Downloading tokenizers-0.21.4-cp39-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (6.7 kB)
+Collecting accelerate==0.33.0 (from -r /root/rosef26/requirements.txt (line 12))
+  Downloading accelerate-0.33.0-py3-none-any.whl.metadata (18 kB)
+Collecting optuna==4.9.0 (from -r /root/rosef26/requirements.txt (line 13))
+  Downloading optuna-4.9.0-py3-none-any.whl.metadata (15 kB)
+Collecting tqdm==4.70.1 (from -r /root/rosef26/requirements.txt (line 14))
+  Downloading tqdm-4.70.1-py3-none-any.whl.metadata (57 kB)
+Collecting protobuf==7.36.2 (from -r /root/rosef26/requirements.txt (line 17))
+  Using cached protobuf-7.36.2-cp310-abi3-manylinux2014_x86_64.whl.metadata (595 bytes)
+Collecting python-socketio==5.17.0 (from python-socketio[client]==5.17.0->-r /root/rosef26/requirements.txt (line 18))
+  Downloading python_socketio-5.17.0-py3-none-any.whl.metadata (3.6 kB)
+Collecting pydantic==2.14.1 (from -r /root/rosef26/requirements.txt (line 19))
+  Downloading pydantic-2.14.1-py3-none-any.whl.metadata (133 kB)
+Collecting sentencepiece==0.2.2 (from -r /root/rosef26/requirements.txt (line 20))
+  Downloading sentencepiece-0.2.2-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (33 kB)
+Collecting einops==0.8.2 (from -r /root/rosef26/requirements.txt (line 21))
+  Downloading einops-0.8.2-py3-none-any.whl.metadata (13 kB)
+Collecting pillow==10.4.0 (from -r /root/rosef26/requirements.txt (line 23))
+  Using cached pillow-10.4.0-cp312-cp312-manylinux_2_28_x86_64.whl.metadata (9.2 kB)
+Collecting huggingface_hub==0.36.2 (from -r /root/rosef26/requirements.txt (line 26))
+  Downloading huggingface_hub-0.36.2-py3-none-any.whl.metadata (15 kB)
+Collecting safetensors==0.8.0 (from -r /root/rosef26/requirements.txt (line 27))
+  Downloading safetensors-0.8.0-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.2 kB)
+Collecting pytest==9.1.1 (from -r /root/rosef26/requirements.txt (line 28))
+  Downloading pytest-9.1.1-py3-none-any.whl.metadata (7.6 kB)
+Collecting filelock (from torch==2.3.0+cu121->-r /root/rosef26/requirements.txt (line 5))
+  Downloading filelock-4.2.4-py3-none-any.whl.metadata (2.0 kB)
+Collecting typing-extensions>=4.8.0 (from torch==2.3.0+cu121->-r /root/rosef26/requirements.txt (line 5))
+  Downloading typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)
+Collecting sympy (from torch==2.3.0+cu121->-r /root/rosef26/requirements.txt (line 5))
+  Downloading sympy-1.14.0-py3-none-any.whl.metadata (12 kB)
+Collecting networkx (from torch==2.3.0+cu121->-r /root/rosef26/requirements.txt (line 5))
+  Downloading networkx-3.7-py3-none-any.whl.metadata (6.7 kB)
+Collecting jinja2 (from torch==2.3.0+cu121->-r /root/rosef26/requirements.txt (line 5))
+  Downloading jinja2-3.1.6-py3-none-any.whl.metadata (2.9 kB)
+Collecting fsspec (from torch==2.3.0+cu121->-r /root/rosef26/requirements.txt (line 5))
+  Downloading fsspec-2026.9.0-py3-none-any.whl.metadata (10 kB)
+Collecting nvidia-cuda-nvrtc-cu12==12.1.105 (from torch==2.3.0+cu121->-r /root/rosef26/requirements.txt (line 5))
+  Downloading nvidia_cuda_nvrtc_cu12-12.1.105-py3-none-manylinux1_x86_64.whl (23.7 MB)
+     ━━━━━━━━━━ 23.7/23.7  118.5 MB/s  0:00:00
+                MB                            
+Collecting nvidia-cuda-runtime-cu12==12.1.105 (from torch==2.3.0+cu121->-r /root/rosef26/requirements.txt (line 5))
+  Downloading nvidia_cuda_runtime_cu12-12.1.105-py3-none-manylinux1_x86_64.whl (823 kB)
+     ━━━━━━━━━━ 823.6/823… 358.5 MB/s  0:00:00
+                kB                            
+Collecting nvidia-cuda-cupti-cu12==12.1.105 (from torch==2.3.0+cu121->-r /root/rosef26/requirements.txt (line 5))
+  Downloading nvidia_cuda_cupti_cu12-12.1.105-py3-none-manylinux1_x86_64.whl (14.1 MB)
+     ━━━━━━━━━━ 14.1/14.1  172.6 MB/s  0:00:00
+                MB                            
+Collecting nvidia-cudnn-cu12==8.9.2.26 (from torch==2.3.0+cu121->-r /root/rosef26/requirements.txt (line 5))
+  Downloading nvidia_cudnn_cu12-8.9.2.26-py3-none-manylinux1_x86_64.whl (731.7 MB)
+     ━━━━━━━━━━ 731.7/731… 159.4 MB/s  0:00:04
+                MB                            
+Collecting nvidia-cublas-cu12==12.1.3.1 (from torch==2.3.0+cu121->-r /root/rosef26/requirements.txt (line 5))
+  Downloading nvidia_cublas_cu12-12.1.3.1-py3-none-manylinux1_x86_64.whl (410.6 MB)
+     ━━━━━━━━━━ 410.6/410… 159.6 MB/s  0:00:02
+                MB                            
+Collecting nvidia-cufft-cu12==11.0.2.54 (from torch==2.3.0+cu121->-r /root/rosef26/requirements.txt (line 5))
+  Downloading nvidia_cufft_cu12-11.0.2.54-py3-none-manylinux1_x86_64.whl (121.6 MB)
+     ━━━━━━━━━━ 121.6/121… 163.7 MB/s  0:00:00
+                MB                            
+Collecting nvidia-curand-cu12==10.3.2.106 (from torch==2.3.0+cu121->-r /root/rosef26/requirements.txt (line 5))
+  Downloading nvidia_curand_cu12-10.3.2.106-py3-none-manylinux1_x86_64.whl (56.5 MB)
+     ━━━━━━━━━━ 56.5/56.5  162.0 MB/s  0:00:00
+                MB                            
+Collecting nvidia-cusolver-cu12==11.4.5.107 (from torch==2.3.0+cu121->-r /root/rosef26/requirements.txt (line 5))
+  Downloading nvidia_cusolver_cu12-11.4.5.107-py3-none-manylinux1_x86_64.whl (124.2 MB)
+     ━━━━━━━━━━ 124.2/124… 167.6 MB/s  0:00:00
+                MB                            
+Collecting nvidia-cusparse-cu12==12.1.0.106 (from torch==2.3.0+cu121->-r /root/rosef26/requirements.txt (line 5))
+  Downloading nvidia_cusparse_cu12-12.1.0.106-py3-none-manylinux1_x86_64.whl (196.0 MB)
+     ━━━━━━━━━━ 196.0/196… 155.0 MB/s  0:00:01
+                MB                            
+Collecting nvidia-nccl-cu12==2.20.5 (from torch==2.3.0+cu121->-r /root/rosef26/requirements.txt (line 5))
+  Downloading nvidia_nccl_cu12-2.20.5-py3-none-manylinux2014_x86_64.whl (176.2 MB)
+     ━━━━━━━━━━ 176.2/176… 131.9 MB/s  0:00:01
+                MB                            
+Collecting nvidia-nvtx-cu12==12.1.105 (from torch==2.3.0+cu121->-r /root/rosef26/requirements.txt (line 5))
+  Downloading nvidia_nvtx_cu12-12.1.105-py3-none-manylinux1_x86_64.whl (99 kB)
+Collecting packaging>=20.0 (from transformers==4.51.0->-r /root/rosef26/requirements.txt (line 10))
+  Downloading packaging-26.3-py3-none-any.whl.metadata (3.5 kB)
+Collecting pyyaml>=5.1 (from transformers==4.51.0->-r /root/rosef26/requirements.txt (line 10))
+  Downloading pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.4 kB)
+Collecting regex!=2019.12.17 (from transformers==4.51.0->-r /root/rosef26/requirements.txt (line 10))
+  Downloading regex-2026.9.29-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (40 kB)
+Collecting requests (from transformers==4.51.0->-r /root/rosef26/requirements.txt (line 10))
+  Downloading requests-2.34.2-py3-none-any.whl.metadata (4.8 kB)
+Collecting hf-xet<2.0.0,>=1.1.3 (from huggingface_hub==0.36.2->-r /root/rosef26/requirements.txt (line 26))
+  Downloading hf_xet-1.7.1-cp38-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (4.9 kB)
+Collecting psutil (from accelerate==0.33.0->-r /root/rosef26/requirements.txt (line 12))
+  Downloading psutil-7.2.2-cp36-abi3-manylinux2010_x86_64.manylinux_2_12_x86_64.manylinux_2_28_x86_64.whl.metadata (22 kB)
+Collecting alembic>=1.5.0 (from optuna==4.9.0->-r /root/rosef26/requirements.txt (line 13))
+  Downloading alembic-1.20.1-py3-none-any.whl.metadata (7.3 kB)
+Collecting colorlog (from optuna==4.9.0->-r /root/rosef26/requirements.txt (line 13))
+  Downloading colorlog-6.12.0-py3-none-any.whl.metadata (11 kB)
+Collecting sqlalchemy>=1.4.2 (from optuna==4.9.0->-r /root/rosef26/requirements.txt (line 13))
+  Downloading sqlalchemy-2.1.6-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (9.7 kB)
+Collecting bidict>=0.21.0 (from python-socketio==5.17.0->python-socketio[client]==5.17.0->-r /root/rosef26/requirements.txt (line 18))
+  Downloading bidict-0.24.1-py3-none-any.whl.metadata (8.7 kB)
+Collecting python-engineio>=4.13.2 (from python-socketio==5.17.0->python-socketio[client]==5.17.0->-r /root/rosef26/requirements.txt (line 18))
+  Downloading python_engineio-4.15.1-py3-none-any.whl.metadata (2.6 kB)
+Collecting annotated-types>=0.6.0 (from pydantic==2.14.1->-r /root/rosef26/requirements.txt (line 19))
+  Downloading annotated_types-0.8.0-py3-none-any.whl.metadata (15 kB)
+Collecting pydantic-core==2.50.1 (from pydantic==2.14.1->-r /root/rosef26/requirements.txt (line 19))
+  Downloading pydantic_core-2.50.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (6.5 kB)
+Collecting typing-inspection>=0.4.4 (from pydantic==2.14.1->-r /root/rosef26/requirements.txt (line 19))
+  Downloading typing_inspection-0.4.4-py3-none-any.whl.metadata (2.6 kB)
+Collecting iniconfig>=1.0.1 (from pytest==9.1.1->-r /root/rosef26/requirements.txt (line 28))
+  Using cached iniconfig-2.3.1-py3-none-any.whl.metadata (2.8 kB)
+Collecting pluggy<2,>=1.5 (from pytest==9.1.1->-r /root/rosef26/requirements.txt (line 28))
+  Using cached pluggy-1.7.0-py3-none-any.whl.metadata (5.0 kB)
+Collecting pygments>=2.7.2 (from pytest==9.1.1->-r /root/rosef26/requirements.txt (line 28))
+  Downloading pygments-2.21.0-py3-none-any.whl.metadata (2.5 kB)
+Collecting nvidia-nvjitlink-cu12 (from nvidia-cusolver-cu12==11.4.5.107->torch==2.3.0+cu121->-r /root/rosef26/requirements.txt (line 5))
+  Downloading nvidia_nvjitlink_cu12-12.9.86-py3-none-manylinux2010_x86_64.manylinux_2_12_x86_64.whl (39.7 MB)
+     ━━━━━━━━━━ 39.7/39.7  134.4 MB/s  0:00:00
+                MB                            
+Collecting websocket-client>=0.54.0 (from python-socketio[client]==5.17.0->-r /root/rosef26/requirements.txt (line 18))
+  Downloading websocket_client-1.9.2-py3-none-any.whl.metadata (8.3 kB)
+Collecting Mako (from alembic>=1.5.0->optuna==4.9.0->-r /root/rosef26/requirements.txt (line 13))
+  Downloading mako-1.4.3-py3-none-any.whl.metadata (2.9 kB)
+Collecting simple-websocket>=0.10.0 (from python-engineio>=4.13.2->python-socketio==5.17.0->python-socketio[client]==5.17.0->-r /root/rosef26/requirements.txt (line 18))
+  Downloading simple_websocket-1.1.0-py3-none-any.whl.metadata (1.5 kB)
+Collecting charset_normalizer<4,>=2 (from requests->transformers==4.51.0->-r /root/rosef26/requirements.txt (line 10))
+  Downloading charset_normalizer-3.5.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (46 kB)
+Collecting idna<4,>=2.5 (from requests->transformers==4.51.0->-r /root/rosef26/requirements.txt (line 10))
+  Downloading idna-3.20-py3-none-any.whl.metadata (7.2 kB)
+Collecting urllib3<3,>=1.26 (from requests->transformers==4.51.0->-r /root/rosef26/requirements.txt (line 10))
+  Downloading urllib3-2.8.0-py3-none-any.whl.metadata (7.4 kB)
+Collecting certifi>=2023.5.7 (from requests->transformers==4.51.0->-r /root/rosef26/requirements.txt (line 10))
+  Downloading certifi-2026.10.23-py3-none-any.whl.metadata (2.5 kB)
+Collecting wsproto (from simple-websocket>=0.10.0->python-engineio>=4.13.2->python-socketio==5.17.0->python-socketio[client]==5.17.0->-r /root/rosef26/requirements.txt (line 18))
+  Downloading wsproto-1.3.2-py3-none-any.whl.metadata (5.2 kB)
+Collecting MarkupSafe>=2.0 (from jinja2->torch==2.3.0+cu121->-r /root/rosef26/requirements.txt (line 5))
+  Downloading markupsafe-3.0.4-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.7 kB)
+Collecting mpmath<1.4,>=1.1.0 (from sympy->torch==2.3.0+cu121->-r /root/rosef26/requirements.txt (line 5))
+  Downloading mpmath-1.3.0-py3-none-any.whl.metadata (8.6 kB)
+Collecting h11<1,>=0.16.0 (from wsproto->simple-websocket>=0.10.0->python-engineio>=4.13.2->python-socketio==5.17.0->python-socketio[client]==5.17.0->-r /root/rosef26/requirements.txt (line 18))
+  Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+Downloading numpy-1.26.4-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (18.0 MB)
+   ━━━━━━━━━━━ 18.0/18.0   126.8 MB/s  0:00:00
+               MB                             
+Downloading transformers-4.51.0-py3-none-any.whl (10.4 MB)
+   ━━━━━━━━━━━ 10.4/10.4   113.8 MB/s  0:00:00
+               MB                             
+Downloading tokenizers-0.21.4-cp39-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (3.1 MB)
+   ━━━━━━━━━━━━ 3.1/3.1 MB 213.7 MB/s  0:00:00
+Downloading huggingface_hub-0.36.2-py3-none-any.whl (566 kB)
+   ━━━━━━━━━━━ 566.4/566.4 122.4 MB/s  0:00:00
+               kB                             
+Downloading accelerate-0.33.0-py3-none-any.whl (315 kB)
+Downloading optuna-4.9.0-py3-none-any.whl (425 kB)
+Downloading tqdm-4.70.1-py3-none-any.whl (80 kB)
+Using cached protobuf-7.36.2-cp310-abi3-manylinux2014_x86_64.whl (343 kB)
+Downloading python_socketio-5.17.0-py3-none-any.whl (82 kB)
+Downloading pydantic-2.14.1-py3-none-any.whl (488 kB)
+Downloading sentencepiece-0.2.2-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (1.4 MB)
+   ━━━━━━━━━━━━ 1.4/1.4 MB 101.7 MB/s  0:00:00
+Downloading einops-0.8.2-py3-none-any.whl (65 kB)
+Using cached pillow-10.4.0-cp312-cp312-manylinux_2_28_x86_64.whl (4.5 MB)
+Downloading safetensors-0.8.0-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (516 kB)
+Downloading pytest-9.1.1-py3-none-any.whl (386 kB)
+Downloading pydantic_core-2.50.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.2 MB)
+   ━━━━━━━━━━━━ 2.2/2.2 MB 200.1 MB/s  0:00:00
+Downloading hf_xet-1.7.1-cp38-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (4.2 MB)
+   ━━━━━━━━━━━━ 4.2/4.2 MB 161.9 MB/s  0:00:00
+Using cached pluggy-1.7.0-py3-none-any.whl (27 kB)
+Downloading alembic-1.20.1-py3-none-any.whl (270 kB)
+Downloading annotated_types-0.8.0-py3-none-any.whl (13 kB)
+Downloading bidict-0.24.1-py3-none-any.whl (36 kB)
+Downloading fsspec-2026.9.0-py3-none-any.whl (221 kB)
+Using cached iniconfig-2.3.1-py3-none-any.whl (7.6 kB)
+Downloading packaging-26.3-py3-none-any.whl (129 kB)
+Downloading pygments-2.21.0-py3-none-any.whl (1.3 MB)
+   ━━━━━━━━━━━━ 1.3/1.3 MB 224.0 MB/s  0:00:00
+Downloading python_engineio-4.15.1-py3-none-any.whl (60 kB)
+Downloading pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (807 kB)
+   ━━━━━━━━━━━ 807.9/807.9 129.4 MB/s  0:00:00
+               kB                             
+Downloading regex-2026.9.29-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (807 kB)
+   ━━━━━━━━━━━ 807.8/807.8 128.5 MB/s  0:00:00
+               kB                             
+Downloading requests-2.34.2-py3-none-any.whl (73 kB)
+Downloading charset_normalizer-3.5.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (257 kB)
+Downloading idna-3.20-py3-none-any.whl (69 kB)
+Downloading urllib3-2.8.0-py3-none-any.whl (135 kB)
+Downloading certifi-2026.10.23-py3-none-any.whl (135 kB)
+Downloading simple_websocket-1.1.0-py3-none-any.whl (13 kB)
+Downloading sqlalchemy-2.1.6-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (4.7 MB)
+   ━━━━━━━━━━━━ 4.7/4.7 MB 165.9 MB/s  0:00:00
+Downloading typing_extensions-4.16.0-py3-none-any.whl (45 kB)
+Downloading typing_inspection-0.4.4-py3-none-any.whl (14 kB)
+Downloading websocket_client-1.9.2-py3-none-any.whl (95 kB)
+Downloading colorlog-6.12.0-py3-none-any.whl (12 kB)
+Downloading filelock-4.2.4-py3-none-any.whl (162 kB)
+Downloading jinja2-3.1.6-py3-none-any.whl (134 kB)
+Downloading markupsafe-3.0.4-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (22 kB)
+Downloading mako-1.4.3-py3-none-any.whl (80 kB)
+Downloading networkx-3.7-py3-none-any.whl (2.1 MB)
+   ━━━━━━━━━━━━ 2.1/2.1 MB 112.0 MB/s  0:00:00
+Downloading psutil-7.2.2-cp36-abi3-manylinux2010_x86_64.manylinux_2_12_x86_64.manylinux_2_28_x86_64.whl (155 kB)
+Downloading sympy-1.14.0-py3-none-any.whl (6.3 MB)
+   ━━━━━━━━━━━━ 6.3/6.3 MB 126.3 MB/s  0:00:00
+Downloading mpmath-1.3.0-py3-none-any.whl (536 kB)
+   ━━━━━━━━━━━━ 536.2/536.2 82.5 MB/s  0:00:00
+                kB                            
+Downloading wsproto-1.3.2-py3-none-any.whl (24 kB)
+Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+Installing collected packages: mpmath, websocket-client, urllib3, typing-extensions, tqdm, sympy, sentencepiece, safetensors, regex, pyyaml, pygments, psutil, protobuf, pluggy, pillow, packaging, nvidia-nvtx-cu12, nvidia-nvjitlink-cu12, nvidia-nccl-cu12, nvidia-curand-cu12, nvidia-cufft-cu12, nvidia-cuda-runtime-cu12, nvidia-cuda-nvrtc-cu12, nvidia-cuda-cupti-cu12, nvidia-cublas-cu12, numpy, networkx, MarkupSafe, iniconfig, idna, hf-xet, h11, fsspec, filelock, einops, colorlog, charset_normalizer, certifi, bidict, annotated-types, wsproto, typing-inspection, sqlalchemy, requests, pytest, pydantic-core, nvidia-cusparse-cu12, nvidia-cudnn-cu12, Mako, jinja2, simple-websocket, pydantic, nvidia-cusolver-cu12, huggingface_hub, alembic, torch, tokenizers, python-engineio, optuna, transformers, python-socketio, accelerate
+
+Successfully installed Mako-1.4.3 MarkupSafe-3.0.4 accelerate-0.33.0 alembic-1.20.1 annotated-types-0.8.0 bidict-0.24.1 certifi-2026.10.23 charset_normalizer-3.5.2 colorlog-6.12.0 einops-0.8.2 filelock-4.2.4 fsspec-2026.9.0 h11-0.16.0 hf-xet-1.7.1 huggingface_hub-0.36.2 idna-3.20 iniconfig-2.3.1 jinja2-3.1.6 mpmath-1.3.0 networkx-3.7 numpy-1.26.4 nvidia-cublas-cu12-12.1.3.1 nvidia-cuda-cupti-cu12-12.1.105 nvidia-cuda-nvrtc-cu12-12.1.105 nvidia-cuda-runtime-cu12-12.1.105 nvidia-cudnn-cu12-8.9.2.26 nvidia-cufft-cu12-11.0.2.54 nvidia-curand-cu12-10.3.2.106 nvidia-cusolver-cu12-11.4.5.107 nvidia-cusparse-cu12-12.1.0.106 nvidia-nccl-cu12-2.20.5 nvidia-nvjitlink-cu12-12.9.86 nvidia-nvtx-cu12-12.1.105 optuna-4.9.0 packaging-26.3 pillow-10.4.0 pluggy-1.7.0 protobuf-7.36.2 psutil-7.2.2 pydantic-2.14.1 pydantic-core-2.50.1 pygments-2.21.0 pytest-9.1.1 python-engineio-4.15.1 python-socketio-5.17.0 pyyaml-6.0.3 regex-2026.9.29 requests-2.34.2 safetensors-0.8.0 sentencepiece-0.2.2 simple-websocket-1.1.0 sqlalchemy-2.1.6 sympy-1.14.0 tokenizers-0.21.4 torch-2.3.0+cu121 tqdm-4.70.1 transformers-4.51.0 typing-extensions-4.16.0 typing-inspection-0.4.4 urllib3-2.8.0 websocket-client-1.9.2 wsproto-1.3.2
+Collecting nnsight==0.3.7
+  Downloading nnsight-0.3.7-py3-none-any.whl.metadata (15 kB)
+Downloading nnsight-0.3.7-py3-none-any.whl (3.5 MB)
+   ━━━━━━━━━━━━━ 3.5/3.5 MB 10.0 MB/s  0:00:00
+Installing collected packages: nnsight
+Successfully installed nnsight-0.3.7
+Processing /tmp/tmp.PEkisEsYId
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Getting requirements to build wheel: started
+  Getting requirements to build wheel: finished with status 'done'
+  Preparing metadata (pyproject.toml): started
+  Preparing metadata (pyproject.toml): finished with status 'done'
+Building wheels for collected packages: ddo-defense
+  Building wheel for ddo-defense (pyproject.toml): started
+  Building wheel for ddo-defense (pyproject.toml): finished with status 'done'
+  Created wheel for ddo-defense: filename=ddo_defense-0.1.0-py3-none-any.whl size=124941 sha256=84566822e2fb24693032adc0dd8aca064f165197a613a8a579126e93e0561da7
+  Stored in directory: /tmp/pip-ephem-wheel-cache-he9p9kgm/wheels/70/19/2a/5c782b50a6cd6c59ce24d6bd3a6a1574b01e94c303f63d7cef
+Successfully built ddo-defense
+Installing collected packages: ddo-defense
+Successfully installed ddo-defense-0.1.0
+........................................................................ [ 20%]
+........................................................................ [ 41%]
+........................................................................ [ 62%]
+........................................................................ [ 83%]
+..........................................................               [100%]
+.....                                                                    [100%]
+5 passed in 1.54s
+torch 2.3.0+cu121 cuda available: True
+setup done: /root/rosef26/.venv
