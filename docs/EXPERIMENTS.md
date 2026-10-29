@@ -1,6 +1,6 @@
 # Experiments: how each result was made
 
-All runs were on one rented RTX 3090 (24 GB) on 2026-10-28/29. The timeline, every fix and the box details are in [RUNLOG.md](RUNLOG.md). The box's own scripts, logs and package versions are in [`runs/2026-10-28_vast/`](../runs/2026-10-28_vast/).
+All runs were on rented RTX 3090s (24 GB): the main run on 2026-10-28/29 and the follow-up on 2026-10-29. The timeline, every fix and the box details are in [RUNLOG.md](RUNLOG.md). The box's own scripts, logs and package versions are in [`runs/2026-10-28_vast/`](../runs/2026-10-28_vast/).
 
 ## Fixed for every result
 
@@ -26,6 +26,8 @@ Each `results/<folder>/<run>.json` holds rates and settings only. Raw completion
 | `seed44/` to `seed46/` | replace-mode DDO, `defended` only | build, then `scripts/attack.py --model models/ddo_llama3_seedN --tag seedN/defended --edits artifacts/ddo_llama3_seedN/edits.safetensors` (loop in RUNLOG, 22:01) |
 | `additive_seed42/` | additive mode: the same 6 runs plus gate_up_cos m=10 | `build_ddo_llama3.sh --seed 42 --name additive_seed42 -- --compile_mode additive`, `run_attacks.sh --name additive_seed42`; m=10 via `runs/.../scripts/queue.sh` |
 | `additive_seed43/`, `additive_seed44/` | additive mode: defended, gate_up_cos m=1 | `runs/.../scripts/queue2.sh` |
+| `nofilter_seed43/`, `nofilter_seed44/` | replace mode with the confusion filter off: defended, gate_up_cos m=1 | `build_ddo_llama3.sh --seed N --name nofilter_seedN --no-confusion-filter`, attacks via `scripts/queue_followup.sh` |
+| `additive_seed45/`, `additive_seed46/` | additive mode: defended, gate_up_cos m=1 | `scripts/queue_followup.sh` |
 | `noise_seed42/`, `split2_seed42/` | post-hoc camouflage of the replace seed-42 build: defended, gate_up_cos m=1 and m=10, oracle | `scripts/camouflage.py --name noise_seed42 --up-norm 0.8 --down-norm 0.8` (plus `--split 2` for split2), attacks via `queue.sh` |
 | `benign/` | harmless-prompt check for each model above and each OBLITERATUS output | `scripts/benign.py`, via the queue scripts |
 | `obliteratus/` | OBLITERATUS `advanced` and `aggressive` on the original, replace 42 and additive 42, then judged with no RFA | `queue3.sh` (advanced) and `queue4.sh aggressive`; see below |

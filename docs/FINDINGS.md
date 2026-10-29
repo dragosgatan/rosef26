@@ -43,6 +43,18 @@ Defended ASR over five builds. Each build has the same config, the same 9 neuron
   | harmful prompts in pool | 13 | 14 | 17 | 31 | 38 |
   | defended ASR | 0.80 | 0.83 | 0.39 | 0.24 | 0.18 |
 
+**Test of the pool-size cause** (2026-10-29): seeds 43 and 44 rebuilt in replace mode with the filter off (`--no-confusion-filter`, all 128 harmful prompts), nothing else changed.
+
+| seed | 43 | 44 |
+|---|---|---|
+| defended ASR, filter on → off | 0.83 → **0.07** | 0.80 → **0.63** |
+| final log-odds, filter on → off | 2.75 → 8.14 | 2.51 → 8.12 |
+| gate_up_cos m=1 (filter off) | 9/9 → 0.80 | 9/9 → 0.80 |
+
+- **The pool is a major cause, not the only one:** seed 43 fully recovers, seed 44 only partly.
+- **High final log-odds don't guarantee protection** (seed 44: 8.12 and still 0.63).
+- **Fixing training doesn't hide the decoys:** cos = 1 stays, and the detector still removes them.
+
 ## 3. Camouflage
 
 **Additive mode** (the authors' `--compile_mode additive`) adds the decoy onto the host neuron instead of overwriting it.
@@ -73,6 +85,8 @@ Defended ASR over five builds. Each build has the same config, the same 9 neuron
   | additive, final refusal log-odds | 8.49 | 9.61 | 8.78 |
 
   Additive training ends with high log-odds every time, while replace mode does so only sometimes.
+
+  Seeds 45 and 46 (2026-10-29): additive defended **0.11 / 0.05** (replace: 0.18 / 0.24); gate_up_cos m=1 0/9 both; harmless refusals 2% / 1%. Over five seeds additive gives 0.00-0.11, lower than replace (0.18-0.83) on every seed.
 
 **Noise / split** (`scripts/camouflage.py`): applied after the fact to the seed-42 replace build, with no retraining. Noise is added only in directions the model's MLP input almost never uses. Both variants leave the model unchanged (KL about 1e-3 per token; harmless refusals 3%).
 
